@@ -1,8 +1,8 @@
 .hero-section {
   background: linear-gradient(to right, #9b4dff, #b388ff);
   color: white;
-  padding: 3rem 2.5rem;
-  padding-left: 3.5rem; /* ✅ add this line */
+  padding: 2rem;
+  padding-left: 2rem; /* ✅ add this line */
   position: relative;
   z-index: 0;
   width: 100%;
@@ -34,7 +34,7 @@
 .homepage-container {
   background-color: #fff;
   min-height: 100vh;
-  padding: 2rem 2rem; /* ✅ Less left padding */
+  padding: 2rem; /* ✅ Less left padding */
   padding-left: 2rem; /* ✅ Matches header */
   margin-left: 0;
   width: 100%;

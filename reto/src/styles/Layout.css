@@ -1,13 +1,25 @@
-/* Layout.css */
 .layout-container {
   display: flex;
-  align-items: flex-start;
-  min-height: 100vh;
   width: 100%;
+  height: 100%;
 }
+
 .layout-content {
   flex-grow: 1;
-  overflow-y: auto;
-  background: none;
   padding: 0;
+  background-color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  margin-left: 250px; /* Espacio cuando el sidebar está visible */
+  transition: margin-left 0.3s ease;
+}
+
+.layout-container.collapsed .layout-content {
+  margin-left: 0 !important; /* ✅ Ocupa todo el ancho al colapsar sidebar */
+}
+
+/* Asegura que el header se alinee correctamente */
+.layout-container .hero-section {
+  margin-left: 0;
+  width: 100%;
 }

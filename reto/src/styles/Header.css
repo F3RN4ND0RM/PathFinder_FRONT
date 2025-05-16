@@ -37,11 +37,21 @@
 }
 
 @keyframes ring {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(15deg); }
-  50% { transform: rotate(-15deg); }
-  75% { transform: rotate(10deg); }
-  100% { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(-15deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .notification-counter {
@@ -88,3 +98,105 @@
   border: none;
 }
 
+.hero-section {
+  background: linear-gradient(to right, #9b4dff, #b388ff);
+  color: white;
+  padding: 3rem 2rem 2rem 2rem;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative; /* ✅ necesario para que el botón absoluto se posicione dentro */
+}
+
+.hero-text {
+  margin: 0;
+  padding: 0;
+}
+
+.blinking-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: white;
+  animation: blink 1s steps(2, start) infinite;
+  margin-left: 4px;
+  vertical-align: bottom;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.sidebar-expand-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  margin-top: 0.2rem; /* Opcional: ajusta si se ve muy arriba */
+}
+
+.floating-collapse-btn-header {
+  background-color: transparent;
+  color: white;
+  border: none;
+  width: 60px;
+  height: 60px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-flex-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+.left-button-area {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 10;
+}
+
+.header-text-area {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.notification-wrapper {
+  flex-shrink: 0;
+}
+
+/*.floating-collapse-btn-header svg {
+  width: 42px;
+  height: 42px;
+  fill: white;
+} */
+
+/* Aumenta tamaño y color del ícono dentro del botón flotante */
+.floating-collapse-btn-header .expand-icon {
+  width: 48px !important;
+  height: 48px !important;
+  fill: red !important; /* Cámbialo luego a white si lo quieres blanco */
+}
+
+.bootstrap-expand-button {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 10;
+  background: transparent;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}

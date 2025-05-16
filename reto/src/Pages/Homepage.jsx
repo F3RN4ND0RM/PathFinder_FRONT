@@ -6,6 +6,7 @@ import Projects from "../components/Projects";
 import "../styles/HomePage.css";
 
 const HomePage = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [certs, setCerts] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -134,12 +135,15 @@ const HomePage = () => {
   //id_9
   //Funcion para obtener la lista de certificaciones desde el backend (GET /certifications).
   // Esta llamada debe ejecutarse al cargar el componente Notifications con la condicion de que la fecha de expirarcion sea menor a 7 dias.
+  const fixedSubtitle = "Check your notifications and active certifications";
   return (
     <>
       <Header
         title={`Welcome, ${name}`}
-        subtitle="Check your notifications and active certifications"
+        subtitle={fixedSubtitle}
         notifications={notifications}
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
       />
       <div className="homepage-container fade-in">
         <Row className="mt-4">

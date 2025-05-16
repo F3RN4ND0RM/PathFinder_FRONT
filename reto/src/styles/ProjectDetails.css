@@ -1,0 +1,56 @@
+.goal-main {
+    max-width: 500px;
+    margin-right: auto;
+    z-index: 1;
+  }
+  
+  .goal-main h4 {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .goal-main h4::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), #9370db);
+    border-radius: 2px;
+  }
+
+  /* Button */
+button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background-color: #6a1ab8;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+.modal-backdrop.show {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
-import { Container, Row, Col} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Header from "../components/Header";
 import "../styles/Courses.css";
 
@@ -80,17 +80,16 @@ const Courses = () => {
         {inProgressCourses.length > 0 && (
           <>
             <Row className="align-items-center justify-content-between mt-4 mb-2">
-            <Col>
-              <h2 className="section-header m-0">Courses in Progress</h2>
-            </Col>
+              <Col>
+                <h2 className="section-header m-0">Courses in Progress</h2>
+              </Col>
               <Col className="text-end">
-              <a href="/allcourses" className="explore-link">
-                Explore
-              </a>
-            </Col>
-          </Row>
-          <Row className="g-4">
-
+                <a href="/allcourses" className="explore-link">
+                  Explore
+                </a>
+              </Col>
+            </Row>
+            <Row className="g-4">
               {inProgressCourses.map((course, idx) => (
                 <Col lg={3} md={6} sm={12} key={idx}>
                   <CourseCard

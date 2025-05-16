@@ -1,13 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Modal } from "react-bootstrap";
 import Notifications from "./Notifications";
 import "../styles/Header.css";
 
-const Header = ({ title, subtitle, notifications = [] }) => {
+const Header = ({
+  title,
+  subtitle,
+  notifications = [],
+  collapsed,
+  setCollapsed,
+}) => {
   const [showNotifications, setShowNotifications] = useState(false);
-  const notificationCount = notifications.length;
   const [isBellAnimated, setIsBellAnimated] = useState(false);
+  const [displayedText, setDisplayedText] = useState("");
+  const [doneTyping, setDoneTyping] = useState(false);
+  const notificationCount = notifications.length;
+
+  useEffect(() => {
+    if (!subtitle) return;
+
+    let index = 0;
+    const interval = setInterval(() => {
+      setDisplayedText(subtitle.slice(0, index + 1));
+      index++;
+      if (index >= subtitle.length) {
+        clearInterval(interval);
+        setDoneTyping(true);
+      }
+    }, 40);
+    return () => clearInterval(interval);
+  }, [subtitle]);
 
   const handleBellClick = () => {
     setIsBellAnimated(true);
@@ -23,11 +46,29 @@ const Header = ({ title, subtitle, notifications = [] }) => {
     <>
       <section className="hero-section">
         <div className="hero-text">
-          <div className="d-flex justify-content-between align-items-start">
-            <div>
+          <div className="header-flex-row">
+            {/* Botón Bootstrap Icons para expandir la sidebar */}
+            {collapsed && (
+              <div
+                className="bootstrap-expand-button"
+                onClick={() => setCollapsed(false)}
+              >
+                <i className="bi bi-chevron-right"></i>
+              </div>
+            )}
+
+            {/* Título y subtítulo */}
+            <div className="header-text-area">
               <h1 className="header-title">{title}</h1>
-              {subtitle && <p className="header-subtitle">{subtitle}</p>}
+              {subtitle && (
+                <p className="header-subtitle">
+                  {displayedText}
+                  {!doneTyping && <span className="blinking-cursor">|</span>}
+                </p>
+              )}
             </div>
+
+            {/* Campana de notificaciones */}
             <div className="notification-wrapper">
               <button
                 className={`notification-button ${
@@ -75,10 +116,12 @@ Header.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   notifications: PropTypes.arrayOf(PropTypes.string).isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  setCollapsed: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
   subtitle: "",
 };
 
-export default Header;
+export default React.memo(Header);
