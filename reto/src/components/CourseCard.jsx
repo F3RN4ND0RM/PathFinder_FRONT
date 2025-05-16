@@ -29,7 +29,7 @@ const CourseCard = ({
         <div className="card-hover-effect">
           <div className="card-img-slide">
             <Card.Img
-              src={`/img/${image}`}
+              src={`img/${image}`}
               alt={title}
               className="custom-img"
             />
