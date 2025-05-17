@@ -309,7 +309,7 @@ function EditProfile() {
 
       {showModal && (
         <div className="password-modal">
-          <div className="modal-content">
+          <div className="edit-profile-page">
             <h3>Confirm Changes </h3>
             <p>Please enter your password to confirm the changes</p>
             <div className="password-input-wrapper">

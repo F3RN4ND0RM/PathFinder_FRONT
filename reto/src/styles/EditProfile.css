@@ -14,7 +14,7 @@
 body {
   font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   color: var(--text-color);
-  background-color: #fff;
+  background-color: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -239,7 +239,7 @@ h2,
   z-index: 1000;
 }
 
-.modal-content {
+.edit-profile-page .modal-content {
   background: white;
   padding: 2rem;
   border-radius: 8px;

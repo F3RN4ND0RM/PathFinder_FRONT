@@ -1,4 +1,4 @@
-.goal-main {
+.project-details-page .goal-main {
     max-width: 500px;
     margin-right: auto;
     z-index: 1;
@@ -47,6 +47,54 @@ button:active {
   backdrop-filter: blur(5px);
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+
+.modal-dialog {
+  max-width: 800px;
+}
+
+.custom-modal-body {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Estilos para los botones */
+.btn-success {
+  background-color: #28a745; /* Verde de Bootstrap */
+  border-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Rojo de Bootstrap */
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.btn-accenture {
+  background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
+  color: white;
+}
+
+.btn-accenture:hover {
+  background-color: #8A00D6;
+  border-color: #8A00D6;
+}
+
+
+
+
 
 
 

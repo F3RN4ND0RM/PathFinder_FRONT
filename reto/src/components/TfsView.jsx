@@ -3,7 +3,6 @@ import Header from './Header';
 import StaffCard from './StaffCard';
 import ProjectCardLink from './ProjectCardLink';
 import { Container, Row, Col, Alert, Spinner } from 'react-bootstrap';
-import '../styles/ManagerView.css';
 
 export const TfsView = () => {
   const [staffList, setStaffList] = useState([]);

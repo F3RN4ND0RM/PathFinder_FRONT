@@ -2,29 +2,39 @@ import { useState } from 'react';
 import { Badge, Card, ListGroup } from 'react-bootstrap';
 import '../styles/StaffCard.css';
 
-const StaffCard = ({ staff }) => {
+const StaffCardProject = ({ staff, onAssign }) => {
   const [expanded, setExpanded] = useState(false);
-  const { 
-    name, 
-    email, 
-    capability, 
-    rolename, 
-    abilitiesOfEmployee, 
-    rolesOfEmployee, 
-    certificationsOfEmployee 
+
+  const {
+    name,
+    email,
+    capability,
+    rolename,
+    abilitiesOfEmployee,
+    rolesOfEmployee,
+    certificationsOfEmployee,
   } = staff;
 
+  const toggleExpanded = () => setExpanded(!expanded);
+
   return (
-    <Card 
+    <Card
       className={`staff-card-wrapper ${expanded ? 'expanded' : ''} clickable`}
-      onClick={() => setExpanded(!expanded)}
+      onClick={toggleExpanded}
     >
       <Card.Body>
-        <div className="staff-header">
-          <h3 className="staff-name">{name}</h3>
-          <Badge bg="purple" className="staff-role">{rolename}</Badge>
+        {/* Cabecera con nombre y botón */}
+        <div className="staff-header d-flex justify-content-between align-items-center">
+          <h3 className="staff-name mb-0">{name}</h3>
+          <button
+            className="assign-button btn btn-sm btn-success"
+            onClick={onAssign}
+          >
+            Assign to role
+          </button>
         </div>
 
+        {/* Detalles básicos */}
         <div className="staff-details">
           <div className="staff-detail-item">
             <span className="detail-label">Email:</span>
@@ -34,15 +44,22 @@ const StaffCard = ({ staff }) => {
             <span className="detail-label">Capability:</span>
             <span className="detail-value">{capability}</span>
           </div>
+          <div className="mt-3">
+            <Badge bg="purple" className="staff-role">{rolename}</Badge>
+          </div>
         </div>
 
+        {/* Indicador de expansión */}
         <div className="click-indicator">
           {expanded ? '▲ Ver menos' : '▼ Ver más'}
         </div>
       </Card.Body>
 
+      {/* Contenido expandido */}
       {expanded && (
         <Card.Body className="card-slide-info">
+
+          {/* Habilidades */}
           {abilitiesOfEmployee?.length > 0 && (
             <div className="info-section">
               <h4>Habilidades</h4>
@@ -54,6 +71,7 @@ const StaffCard = ({ staff }) => {
             </div>
           )}
 
+          {/* Roles */}
           {rolesOfEmployee?.length > 0 && (
             <div className="info-section">
               <h4>Roles</h4>
@@ -65,13 +83,16 @@ const StaffCard = ({ staff }) => {
                     <Badge bg={role.Assigned?.status ? 'success' : 'secondary'}>
                       {role.Assigned?.status ? 'Asignado' : 'Finalizado'}
                     </Badge>
-                    {role.Project?.name && <span> - Proyecto: {role.Project.name}</span>}
+                    {role.Project?.name && (
+                      <span> - Proyecto: {role.Project.name}</span>
+                    )}
                   </ListGroup.Item>
                 ))}
               </ListGroup>
             </div>
           )}
 
+          {/* Certificaciones */}
           {certificationsOfEmployee?.length > 0 && (
             <div className="info-section">
               <h4>Certificaciones</h4>
@@ -88,10 +109,12 @@ const StaffCard = ({ staff }) => {
               </ListGroup>
             </div>
           )}
+
         </Card.Body>
       )}
     </Card>
   );
 };
 
-export default StaffCard;
+export default StaffCardProject;
+  
