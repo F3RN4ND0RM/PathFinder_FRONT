@@ -19,7 +19,7 @@ export default function LoginPage() {
   const handleNoPassword = async () => {
     try {
       await axios.post(
-        "https://pathfinder-back-hnoj.onrender.com/employees/login",
+        `${process.env.REACT_APP_API_BACK}/employees/login`,
         {
           email,
           pass: "",
