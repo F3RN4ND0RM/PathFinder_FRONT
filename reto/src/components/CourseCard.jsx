@@ -28,11 +28,7 @@ const CourseCard = ({
       <Card className="course-card-wrapper">
         <div className="card-hover-effect">
           <div className="card-img-slide">
-            <Card.Img
-              src={`img/${image}`}
-              alt={title}
-              className="custom-img"
-            />
+            <Card.Img src={`img/${image}`} alt={title} className="custom-img" />
           </div>
           <div className="card-description-slide">
             <p>{description}</p>
@@ -63,7 +59,7 @@ const CourseCard = ({
         size="lg"
         centered
         backdrop="true" // permite cerrar al hacer click fuera
-        keyboard={true}  // permite cerrar con Esc
+        keyboard={true} // permite cerrar con Esc
         contentClassName="custom-modal-content"
       >
         <Modal.Body className="d-flex justify-content-center align-items-center p-0">
@@ -80,7 +76,8 @@ const CourseCard = ({
           />
         </Modal.Body>
         <Modal.Footer className="justify-content-center">
-          <Button className="view"
+          <Button
+            className="view"
             variant="primary"
             onClick={() => {
               const link = document.createElement("a");

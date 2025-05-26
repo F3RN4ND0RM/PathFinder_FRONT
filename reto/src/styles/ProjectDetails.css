@@ -90,14 +90,51 @@ button:active {
 .btn-accenture:hover {
   background-color: #8A00D6;
   border-color: #8A00D6;
+  color: white;
 }
 
+.outline-purple-add-role{
+    margin-top: 10px;
+  background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
+  color: white;
+}
 
+.outline-purple-add-role:hover{
+background-color: #8A00D6;
+  border-color: #8A00D6;
+  color: white;
+}
 
+.outline-purple-submit-role{
+  margin-top: 10px;
+  margin-left: 20px;
+  background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
+  color: white;
+}
 
+.outline-purple-submit-role:hover{
+  background-color: #8A00D6;
+  border-color: #8A00D6;
+  color: white;
+}
+.remove {
+  color: var(--primary-purple);
+  background-color: white;
+  border: 1px solid var(--primary-purple); /* ⬅️ Aquí defines borde morado */
+  padding: 0.35rem 0.8rem; /* Opcional: tamaño más pequeño */
+  cursor: pointer;
+}
 
-
-
+.remove:hover {
+  background-color: var(--primary-purple);
+  color: white;
+}
+.form-control:focus {
+  border-color: var(--primary-purple); /* borde morado */
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25); /* sombra morada */
+}
 
 
 

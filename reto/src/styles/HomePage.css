@@ -61,3 +61,115 @@
   display: inline-block;
   margin-left: 20px; /* Ajusta según lo que quieras mover a la derecha */
 }
+
+.notes-box {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  border-top: 4px solid var(--primary-purple);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-top: 1.5rem;
+}
+
+.notes-box h5 {
+  margin-bottom: 0.8rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.notes-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  resize: vertical;
+  font-size: 0.95rem;
+  background-color: white;
+  color: #333;
+}
+
+.save-note-btn {
+  background-color: var(--primary-purple);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.save-note-btn:hover {
+  background-color: var(--dark-purple);
+}
+
+.saved-notes-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.8rem;
+}
+
+.saved-note-item {
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #333;
+}
+
+.saved-note-item i {
+  color: var(--primary-purple);
+}
+
+.projects-box {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  border-top: 4px solid var(--primary-purple);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.note-text {
+  flex-grow: 1;
+}
+
+.note-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.note-check-btn,
+.note-delete-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #444;
+}
+
+.note-check-btn:hover {
+  background-color: #d4f7dc;
+  border-color: green;
+  color: green;
+}
+
+.note-delete-btn:hover {
+  background-color: #fce0e0;
+  border-color: red;
+  color: red;
+}

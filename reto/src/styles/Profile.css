@@ -183,8 +183,24 @@
 
 .skills-list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap; /* ← permite que se acomoden horizontalmente */
   gap: 0.4rem;
+  align-items: center;
+}
+.inline-skills .skill-tag {
+  display: inline-flex; /* ← para que el fondo gris se mantenga horizontal */
+  align-items: center;
+  background-color: #eef2f5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.inline-skills .skill-tag:hover {
+  background-color: var(--primary-purple);
+  color: white;
 }
 
 .skill-tag {
@@ -229,4 +245,8 @@
   .full-width {
     grid-column: span 1;
   }
+}
+
+.project-timeline-box {
+  margin-top: 2rem;
 }

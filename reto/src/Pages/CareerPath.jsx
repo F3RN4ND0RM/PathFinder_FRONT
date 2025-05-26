@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CareerPath.css";
+import { useEffect } from "react";
 
 export default function CareerPath() {
   const [form, setForm] = useState({
@@ -18,13 +19,34 @@ export default function CareerPath() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // ✅ start loading
-    console.log("Form submitted:", form);
+    setLoading(true);
+    const token = localStorage.getItem("authToken");
 
     try {
-      const token = localStorage.getItem("authToken");
+      // Paso 1: Guardar objetivos del usuario
+      const saveResponse = await fetch(
+        "https://pathfinder-back-hnoj.onrender.com/employees/goals",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+          body: JSON.stringify({
+            technologies: form.skills,
+            goals: form.objective,
+            project: form.values,
+          }),
+        }
+      );
 
-      const response = await fetch(
+      const saveResult = await saveResponse.json();
+      if (saveResult.error) {
+        throw new Error("Failed to save goals: " + saveResult.error);
+      }
+
+      // Paso 2: Obtener recomendaciones
+      const aiResponse = await fetch(
         "https://pathfinder-back-hnoj.onrender.com/ai/courses",
         {
           method: "GET",
@@ -35,21 +57,51 @@ export default function CareerPath() {
         }
       );
 
-      const data = await response.json();
+      const aiData = await aiResponse.json();
 
-      if (!data.error) {
-        localStorage.setItem("recommendedCourses", JSON.stringify(data));
+      if (!aiData.error) {
+        localStorage.setItem("recommendedCourses", JSON.stringify(aiData));
         navigate("/recommendations");
       } else {
-        alert("⚠️ AI recommendation failed: " + data.error);
+        alert("⚠ AI recommendation failed: " + aiData.error);
       }
     } catch (error) {
-      console.error("❌ Error fetching AI courses:", error);
-      alert("An unexpected error occurred. Please try again.");
+      console.error("❌ Error:", error);
+      alert("Something went wrong. Please try again.");
     } finally {
-      setLoading(false); // ✅ stop loading
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchGoals = async () => {
+      const token = localStorage.getItem("authToken");
+      try {
+        const response = await fetch(
+          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              token: token,
+            },
+          }
+        );
+        const data = await response.json();
+        if (!data.error && data.Goal) {
+          setForm({
+            objective: data.Goal.goals || "",
+            skills: data.Goal.technologies || "",
+            values: data.Goal.project || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching goals:", error);
+      }
+    };
+
+    fetchGoals();
+  }, []);
 
   return (
     <div className="career-path-container fade-in">
@@ -61,7 +113,6 @@ export default function CareerPath() {
           <li>Let your values guide your choices.</li>
         </ul>
       </div>
-
       <div className="goal-main">
         <h1>What is your next goal?</h1>
         <p>

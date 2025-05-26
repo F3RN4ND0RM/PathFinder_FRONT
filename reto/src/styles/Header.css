@@ -189,14 +189,13 @@
   height: 48px !important;
   fill: red !important; /* Cámbialo luego a white si lo quieres blanco */
 }
-
 .bootstrap-expand-button {
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  z-index: 10;
   background: transparent;
   color: white;
   font-size: 2rem;
   cursor: pointer;
+  margin-right: 1rem; /* Espaciado si lo necesitas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

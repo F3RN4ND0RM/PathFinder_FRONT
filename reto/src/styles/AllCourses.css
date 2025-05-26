@@ -1,0 +1,53 @@
+.all-couses {
+  flex: 1; /* ocupa todo el ancho disponible */
+}
+
+.all-couses h2 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+  color: var(--dark-gray);
+  position: relative;
+  display: inline-block;
+}
+.all-couses h2::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), #9370db);
+  border-radius: 6px;
+}
+.search-bar-container {
+  position: relative;
+  margin-right: 10rem;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: var(--accent-color);
+  pointer-events: none;
+}
+
+.search-input {
+  padding-left: 36px; /* espacio para el icono */
+  border-color: #ccc;
+}
+
+.search-input:focus {
+  border-color: var(--accent-color) !important; /* cambia el borde al enfocar */
+  box-shadow: 0 0 0 0.2rem var(--light-purple) !important;
+}
+
+.custom-alert {
+  background-color: var(--light-purple);  /* fondo verde claro */
+  color: black;             /* texto verde oscuro */
+  border-color: var(--light-purple);
+}

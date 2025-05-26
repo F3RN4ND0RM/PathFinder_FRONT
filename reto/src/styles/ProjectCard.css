@@ -130,3 +130,26 @@
   background-color: transparent;
   margin-top: 0.5rem;
 }
+.create-roles-btn {
+  position: absolute;
+  top: 9rem;
+  right: 0.9rem;
+  background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
+  color: white;
+}
+.create-roles-btn:hover{
+  background-color: #8A00D6;
+  border-color: #8A00D6;
+  color: white;
+}
+
+.btn-remove{
+    color: var(--primary-purple);
+    border-color: var(--primary-purple);
+}
+
+.btn-remove:hover{
+    background-color: var(--primary-purple);
+    color: white; 
+}

@@ -20,6 +20,7 @@ import HomePage from "./Pages/Homepage";
 import { AllCourses } from "./Pages/AllCourses";
 import CreateProjectPage from "./Pages/CreateProject";
 import ProjectDetail from "./Pages/ProjectDetail";
+import { ProjectDetailM } from "./Pages/ProjectDetailM";
 
 // 🔒 AUTH WRAPPER CORREGIDO
 function AuthWrapper({ children }) {
@@ -154,6 +155,14 @@ function App() {
               element={
                 <Layout>
                   <ProjectDetail />
+                </Layout>
+              }
+            />
+             <Route 
+              path="/assignation/project/manager/:id"
+              element={
+                <Layout>
+                  <ProjectDetailM/>
                 </Layout>
               }
             />

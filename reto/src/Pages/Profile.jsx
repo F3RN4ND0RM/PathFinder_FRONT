@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import ProjectTimeline from "../components/ProjectTimeline";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/UserContext";
 import "../styles/Profile.css";
@@ -40,7 +41,9 @@ function Profile() {
 
     const fetchInactiveProjects = async () => {
       try {
-        const apiUrl = new URL("https://pathfinder-back-hnoj.onrender.com/employees/projects");
+        const apiUrl = new URL(
+          "https://pathfinder-back-hnoj.onrender.com/employees/projects"
+        );
         apiUrl.searchParams.append("status", "false");
 
         const response = await fetch(apiUrl.toString(), {
@@ -65,13 +68,18 @@ function Profile() {
           status: role.Project.status,
         }));
 
-        const inactiveProjects = formattedProjects.filter((project) => !project.status);
+        const inactiveProjects = formattedProjects.filter(
+          (project) => !project.status
+        );
 
         const projectDescriptions = inactiveProjects.map(
           (project) => `${project.name} (${project.platform})`
         );
 
-        localStorage.setItem("inactiveProjects", JSON.stringify(projectDescriptions));
+        localStorage.setItem(
+          "inactiveProjects",
+          JSON.stringify(projectDescriptions)
+        );
       } catch (error) {
         console.error("Error obteniendo proyectos inactivos:", error);
       }
@@ -122,7 +130,8 @@ function Profile() {
   const storedCourses = completedCourses.length
     ? completedCourses
     : JSON.parse(localStorage.getItem("completedCourses")) || [];
-  const inactiveProjects = JSON.parse(localStorage.getItem("inactiveProjects")) || [];
+  const inactiveProjects =
+    JSON.parse(localStorage.getItem("inactiveProjects")) || [];
 
   return (
     <div className="profile-container">
@@ -148,7 +157,6 @@ function Profile() {
           <i className="fas fa-edit"></i> Edit Profile
         </button>
       </div>
-
       <div className="profile-content">
         <div className="profile-section">
           <div className="skills-box profile-info-box">
@@ -158,11 +166,14 @@ function Profile() {
             </div>
             <div className="box-content skills-list">
               {userAbilities.length > 0 ? (
-                userAbilities.map((skill, index) => (
-                  <div key={index} className="skill-tag">
-                    <i className="fas fa-check"></i> {skill.name}
-                  </div>
-                ))
+                <div className="skills-list inline-skills">
+                  {userAbilities.map((skill, index) => (
+                    <span key={index} className="skill-tag">
+                      <i className="fas fa-check"></i> {skill.name}
+                      {index < userAbilities.length - 1 ? "," : ""}
+                    </span>
+                  ))}
+                </div>
               ) : (
                 <span>No skills added yet</span>
               )}
@@ -205,7 +216,12 @@ function Profile() {
             )}
           </div>
         </div>
-      </div>
+
+        {/* ✅ Nueva sección con línea de tiempo */}
+        <div className="project-timeline-box">
+          <ProjectTimeline />
+        </div>
+      </div>{" "}
     </div>
   );
 }

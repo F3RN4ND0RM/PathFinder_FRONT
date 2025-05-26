@@ -24,7 +24,7 @@ import '../styles/ProjectDetails.css';
 import '../styles/StaffCard.css';
 import StaffCardProject from '../components/StaffCardProject';
 import SearchBar from '../components/SearchBar';
-
+import Header from '../components/Header';
 const ProjectDetail = () => {
   const { id } = useParams();
 
@@ -238,16 +238,18 @@ const ProjectDetail = () => {
   );
 
   return (
+    <>
+     <Header
+             title={`${project.name}`}
+             subtitle={`Client: ${project.client}`}
+             notifications={[]}
+             collapsed={false}
+             setCollapsed={() => {}}
+             name={project.name}
+             client={project.client}
+           />
     <Container className="mt-5">
-      <Row className="align-items-center mb-4">
-        <Col md={10}>
-          <h2 className="mb-1">{project.name}</h2>
-          <p className="text-muted mb-0">
-            Client: <strong>{project.client || 'Unassigned'}</strong>
-          </p>
-        </Col>
-      </Row>
-
+      
       <Card className="mb-4 shadow-sm">
         <Card.Body>
           <p className="text-muted mb-4">Description: {project.description}</p>
@@ -281,7 +283,7 @@ const ProjectDetail = () => {
       </Card>
 
       <div className="project-details-page d-flex align-items-center gap-4">
-        <h4>Assigned Roles</h4>
+        <h4 className="section-header m-0">Assigned Roles</h4> 
         <SearchBar
           placeholder="Search roles..."
           value={roleFilter}
@@ -307,7 +309,7 @@ const ProjectDetail = () => {
 
                     {assignedEmployee ? (
                       <Button
-                        variant="danger" 
+                        variant="outline-purple" size="sm" 
                         className="d-flex align-items-center gap-2"
                         onClick={() => handleRemoveClick(role)}
                       >
@@ -323,7 +325,7 @@ const ProjectDetail = () => {
                           <FaPlus /> Add to role
                         </Button>
                         <Button
-                          variant="accenture"
+                          variant="accenture" 
                           className="d-flex align-items-center gap-2"
                           onClick={() => handleAISuggestionsClick(role)}
                         >
@@ -337,9 +339,9 @@ const ProjectDetail = () => {
             );
           })
         ) : (
-          <Col>
-            <p className="text-muted">No roles match your search.</p>
-          </Col>
+
+           <Alert  className="text-center custom-alert">No roles match your search.</Alert>
+         
         )}
       </Row>
 
@@ -436,6 +438,7 @@ const ProjectDetail = () => {
         </Modal.Footer>
       </Modal>
     </Container>
+    </>
   );
 };
 
