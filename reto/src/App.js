@@ -18,6 +18,9 @@ import LoginPage from "./Pages/Login";
 import Recommendations from "./Pages/Recommendations";
 import HomePage from "./Pages/Homepage";
 import { AllCourses } from "./Pages/AllCourses";
+import CreateProjectPage from "./Pages/CreateProject";
+import ProjectDetail from "./Pages/ProjectDetail";
+import { ProjectDetailM } from "./Pages/ProjectDetailM";
 
 // 🔒 AUTH WRAPPER CORREGIDO
 function AuthWrapper({ children }) {
@@ -70,31 +73,65 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                <Layout>
+                <Layout
+                  title="Dashboard"
+                  subtitle="Insightful Metrics for Bright Ideas"
+                  name={localStorage.getItem("userName") || "Usuario"}
+                >
                   <Dashboard />
                 </Layout>
               }
             />
+
             <Route
               path="/career"
               element={
                 <Layout>
-                  <CareerPath />
+                  {(collapsed, setCollapsed) => (
+                    <CareerPath
+                      collapsed={collapsed}
+                      setCollapsed={setCollapsed}
+                    />
+                  )}
                 </Layout>
               }
             />
+
             <Route
-              path="/allcourses"
+              path="/courses"
               element={
-                <Layout>
-                  <AllCourses/>
+                <Layout
+                  title="Your Learning Journey Starts Here!"
+                  subtitle="Pick up where you left off and continue growing your skills!"
+                  name={localStorage.getItem("userName") || "Usuario"}
+                >
+                  <Courses />
                 </Layout>
               }
             />
+
             <Route
               path="/assignation"
               element={
-                <Layout>
+                <Layout
+                  title={
+                    {
+                      TFS: "TFS Dashboard – Manage Your Teams",
+                      Manager: "Manager View – Oversee Project Assignments",
+                    }[localStorage.getItem("userLevel")] ||
+                    "Assignation Overview"
+                  }
+                  subtitle={
+                    {
+                      Usuario:
+                        "Here are your current project responsibilities and teams.",
+                      TFS: "Track staff assignments and project distribution in real time.",
+                      Manager:
+                        "Access insights into all employee assignments and statuses.",
+                    }[localStorage.getItem("userLevel")] || ""
+                  }
+                  name={localStorage.getItem("userName") || "Usuario"}
+                >
                   <Assignation />
                 </Layout>
               }
@@ -103,7 +140,21 @@ function App() {
               path="/profile"
               element={
                 <Layout>
-                  <Profile />
+                  {(collapsed, setCollapsed) => (
+                    <Profile
+                      collapsed={collapsed}
+                      setCollapsed={setCollapsed}
+                    />
+                  )}
+                </Layout>
+              }
+            />
+
+            <Route
+              path="/createproject"
+              element={
+                <Layout>
+                  <CreateProjectPage />
                 </Layout>
               }
             />
@@ -111,18 +162,29 @@ function App() {
               path="/profile/edit"
               element={
                 <Layout>
-                  <EditProfile />
+                  {(collapsed, setCollapsed) => (
+                    <EditProfile
+                      collapsed={collapsed}
+                      setCollapsed={setCollapsed}
+                    />
+                  )}
                 </Layout>
               }
             />
+
             <Route
-              path="/courses"
+              path="/allcourses"
               element={
-                <Layout>
-                  <Courses />
+                <Layout
+                  title="Explore All Courses"
+                  subtitle="Browse a variety of learning opportunities to boost your career"
+                  name={localStorage.getItem("userName") || "Usuario"}
+                >
+                  <AllCourses />
                 </Layout>
               }
             />
+
             <Route
               path="/recommendations"
               element={
@@ -132,11 +194,31 @@ function App() {
               }
             />
             <Route
-              path="/Home"
+              path="/home"
               element={
-                <Layout>
+                <Layout
+                  title={`Welcome, ${
+                    localStorage.getItem("userName") || "Usuario"
+                  }`}
+                  subtitle="Check your notifications and active certifications"
+                  name={localStorage.getItem("userName") || "Usuario"}
+                >
                   <HomePage />
                 </Layout>
+              }
+            />
+
+            <Route
+              path="/assignation/project/:id"
+              element={
+                <ProjectDetail/>
+              }
+            />
+
+            <Route
+              path="/assignation/project/manager/:id"
+              element={
+                <ProjectDetailM />
               }
             />
           </Routes>

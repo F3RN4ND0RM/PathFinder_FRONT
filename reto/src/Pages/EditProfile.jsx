@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
+import SidebarExpandButton from "../components/SidebarExpandButton";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/UserContext";
 import Select from "react-select";
 import "../styles/EditProfile.css";
 
-function EditProfile() {
+function EditProfile({ collapsed, setCollapsed }) {
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [token] = useState(localStorage.getItem("authToken"));
   const [employeeId, setEmployeeId] = useState(null);
   const [form, setForm] = useState({
@@ -32,7 +34,7 @@ function EditProfile() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          `${API_BACK}/employees/`,
           {
             method: "GET",
             headers: {
@@ -68,7 +70,7 @@ function EditProfile() {
     const fetchAbilities = async () => {
       try {
         const res = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/abilities"
+          `${API_BACK}/abilities`
         );
         const data = await res.json();
 
@@ -116,7 +118,7 @@ function EditProfile() {
   const confirmUpdate = async () => {
     try {
       const response = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/update",
+        `${API_BACK}/employees/update`,
         {
           method: "PUT",
           headers: {
@@ -141,7 +143,7 @@ function EditProfile() {
         for (const abilityId of newAbilities) {
           console.log("Sending abilityId:", abilityId);
           const res = await fetch(
-            "https://pathfinder-back-hnoj.onrender.com/employees/abilities",
+            `${API_BACK}/employees/abilities`,
             {
               method: "PUT",
               headers: {
@@ -183,13 +185,20 @@ function EditProfile() {
     <div className="edit-profile-container">
       <div className="edit-profile-card">
         <div className="edit-profile-header">
-          <h2>Edit Profile</h2>
+          <div className="header-title-wrapper">
+            {collapsed && (
+              <div className="sidebar-button-wrapper">
+                <SidebarExpandButton setCollapsed={setCollapsed} />
+              </div>
+            )}
+            <h2>Edit Profile</h2>
+          </div>
           <p>Update your personal and professional information</p>
         </div>
 
         <form onSubmit={handleSubmit} className="edit-profile-form">
           <div className="form-section">
-            <h3 className="section-title">Basic Information</h3>
+            <h3 className="section-title">Ba  sic Information</h3>
             <div className="form-grid">
               <div className="form-group">
                 <label>Name</label>
@@ -309,7 +318,7 @@ function EditProfile() {
 
       {showModal && (
         <div className="password-modal">
-          <div className="modal-content">
+          <div className="edit-profile-page ">
             <h3>Confirm Changes </h3>
             <p>Please enter your password to confirm the changes</p>
             <div className="password-input-wrapper">

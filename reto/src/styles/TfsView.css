@@ -1,0 +1,45 @@
+.search-bar-container-Tfs {
+  position: absolute;
+  top: -60px;
+  left: 800px;
+  width: 250px;
+}
+
+
+@media (max-width: 768px) {
+  .search-bar-container-Tfs {
+     position: absolute;
+  top: -60px;
+  left: 500px;
+  width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar-container-Tfs {
+     position: absolute;
+  top: -60px;
+  left: 10px;
+  width: 250px;
+  }
+}
+
+.search-icon-Tfs  {
+   position: absolute;
+  top: 50%;
+  left: 1px;
+  transform: translateY(-50%);
+  color: var(--accent-color);
+  pointer-events: none;
+
+}
+
+.search-input-Tfs {
+  padding: left;
+  border-color: #ccc;
+}
+
+.search-input-Tfs:focus {
+  border-color: var(--accent-color) !important; /* cambia el borde al enfocar */
+  box-shadow: 0 0 0 0.2rem var(--light-purple) !important;
+}

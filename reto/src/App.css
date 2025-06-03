@@ -1,3 +1,9 @@
+:root {
+  --accent-color: #8a2be2;
+  --dark-gray: #1a1a1a;
+  --light-gray: #ffffff;
+  --dark-purple: rgb(120, 0, 200);
+}
 .App {
   text-align: center;
 }

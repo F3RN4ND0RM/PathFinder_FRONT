@@ -1,11 +1,12 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
-import { Container, Row, Col} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Header from "../components/Header";
 import "../styles/Courses.css";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
+  const API_BACK = process.env.REACT_APP_API_URL;
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -14,7 +15,7 @@ const Courses = () => {
 
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/courses",
+          `${API_BACK}/employees/courses`,
           {
             method: "GET",
             headers: {
@@ -68,29 +69,22 @@ const Courses = () => {
 
   return (
     <div className="courses-page">
-      <Header
-        title="Your learning journey continues here"
-        subtitle="Pick up where you left off and continue growing your skills!"
-        notifications={[]}
-      />
-
       <Container>
         {error && <div className="alert alert-danger">{error}</div>}
 
         {inProgressCourses.length > 0 && (
           <>
             <Row className="align-items-center justify-content-between mt-4 mb-2">
-            <Col>
-              <h2 className="section-header m-0">Courses in Progress</h2>
-            </Col>
+              <Col>
+                <h2 className="section-header m-0">Courses in Progress</h2>
+              </Col>
               <Col className="text-end">
-              <a href="/allcourses" className="explore-link">
-                Explore
-              </a>
-            </Col>
-          </Row>
-          <Row className="g-4">
-
+                <a href="/allcourses" className="explore-link">
+                  Explore
+                </a>
+              </Col>
+            </Row>
+            <Row className="g-4">
               {inProgressCourses.map((course, idx) => (
                 <Col lg={3} md={6} sm={12} key={idx}>
                   <CourseCard

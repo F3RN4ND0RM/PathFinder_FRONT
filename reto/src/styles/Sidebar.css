@@ -1,12 +1,53 @@
+body {
+  background-color: white;
+}
+
+.sidebar-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  display: flex;
+  z-index: 1000;
+}
+
+/* Main sidebar content */
+.sidebar-container {
+  width: 250px;
+  background: linear-gradient(to bottom, #000000, #111111);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.6);
+  border-right: 1px solid #333;
+  position: relative;
+}
+
+/* Collapsed style */
+.sidebar-container.collapsed {
+  width: 0;
+}
+.sidebar-container.collapsed + .collapse-btn {
+  left: 0.75rem; /* Cuando colapsada */
+}
+
+/* Cambia la posición cuando la sidebar está colapsada */
+.layout-container.collapsed .collapse-btn {
+  left: 10px;
+  right: auto;
+}
+
+/* Sidebar links */
 .sidebar-link-container {
   width: 100%;
   transition: background-color 0.3s ease;
 }
-
 .sidebar-link-container:hover {
   background-color: #f1f1f1;
 }
-
 .sidebar-link {
   display: block;
   width: 100%;
@@ -15,23 +56,89 @@
   text-decoration: none;
   transition: color 0.3s ease;
 }
-
 .sidebar-link-container:hover .sidebar-link {
   color: #000000 !important;
 }
 
-.sidebar-container {
-  width: 250px;
-  background-color: #000000;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  position: sticky; /* Ensures it sticks with scrolling */
-  top: 0;
-  align-self: flex-start;
-  height: 100vh; /* Ensures full-screen height always */
-}
-
 .logout-button-container {
   margin-top: auto;
+}
+
+/* Botón dentro de la sidebar cuando está visible */
+.internal-collapse-btn {
+  background-color: transparent;
+  color: #9b4dff;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 0; /* No empujes el botón, déjalo a la derecha */
+  padding: 0.2rem; /* Haz el área clickable más compacta */
+  width: auto; /* Deja que el botón tenga solo el ancho del ícono */
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Asegura que el logo esté a la izquierda y el botón a la derecha */
+  padding: 0.5rem 0.5rem; /* Reduce el padding para que no se expanda demasiado */
+  margin-bottom: 1rem; /* Mantén esto si quieres espacio debajo del logo+botón */
+}
+
+/* Estilo del logo si quieres controlarlo mejor */
+.accenture-logo {
+  height: 60px;
+  object-fit: contain;
+  max-width: 140px;
+  margin-left: auto; /* Esto empuja el logo al centro */
+  margin-right: auto; /* Combina para centrar horizontalmente */
+  display: block;
+}
+
+.sidebar-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -12px; /* closer and tighter to sidebar */
+  width: 24px;
+  height: 100%;
+  background: radial-gradient(
+    circle at left,
+    rgba(155, 77, 255, 0.25),
+    transparent 70%
+  );
+  box-shadow: 8px 0 24px rgba(155, 77, 255, 0.2); /* subtle purple glow */
+  filter: blur(6px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sidebar-link.active {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-left: 4px solid #9b4dff;
+  padding-left: 1.75rem;
+}
+.internal-collapse-btn:hover {
+  color: #7b00cc;
+  transform: scale(1.1);
+}
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center; /* centra las líneas */
+  width: 20px; /* ancho fijo para las líneas */
+  height: 16px; /* alto fijo para el conjunto de líneas */
+}
+
+.hamburger-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: #9b4dff; /* color de las líneas */
+  border-radius: 2px;
 }

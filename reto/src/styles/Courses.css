@@ -1,9 +1,9 @@
 :root {
-  --accent-color: #8a2be2;
+  --accent-color: #621fa1;
   --dark-gray: #1a1a1a;
   --light-gray: #ffffff;
   --dark-purple: rgb(120, 0, 200);
-  --light-purple: rgba(164, 4, 252, 0.1);   
+  --light-purple: rgba(164, 4, 252, 0.1);
 }
 .courses-page {
   padding: 0;

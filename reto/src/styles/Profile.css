@@ -7,9 +7,12 @@
 
 .profile-container {
   padding: 2rem;
-  margin-left: 0px; /* 👈 add this to create space from the sidebar */
+  margin-left: 0px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   animation: fadeIn 0.5s ease-in-out;
+  max-width: 100%; /* 👈 Asegura que el contenedor use el ancho completo */
+  width: 100%; /* 👈 Ancho completo disponible */
+  box-sizing: border-box; /* 👈 Incluye el padding en el ancho */
 }
 
 @keyframes fadeIn {
@@ -36,11 +39,11 @@
   display: flex;
   align-items: flex-start;
   gap: 2rem;
-  margin-bottom: 2rem;
   position: relative;
   border-left: 5px solid var(--primary-purple);
   padding-left: 1rem;
   border-radius: 8px;
+  flex: 1; /* 👈 Asegura que se expanda dentro del contenedor */
 }
 
 .profile-user-info {
@@ -100,6 +103,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  white-space: nowrap;
   transition: all 0.3s ease;
 }
 
@@ -183,8 +187,24 @@
 
 .skills-list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap; /* ← permite que se acomoden horizontalmente */
   gap: 0.4rem;
+  align-items: center;
+}
+.inline-skills .skill-tag {
+  display: inline-flex; /* ← para que el fondo gris se mantenga horizontal */
+  align-items: center;
+  background-color: #eef2f5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.inline-skills .skill-tag:hover {
+  background-color: var(--primary-purple);
+  color: white;
 }
 
 .skill-tag {
@@ -229,4 +249,29 @@
   .full-width {
     grid-column: span 1;
   }
+}
+
+.project-timeline-box {
+  margin-top: 2rem;
+}
+
+.header-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.profile-header-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%; /* 👈 Asegura que ocupe todo el ancho disponible */
+}
+/* Optional: prevent button from stacking above */
+.sidebar-button-wrapper {
+  display: flex;
+  align-items: center;
+  padding-top: 0.4rem;
+  flex-shrink: 0;
 }

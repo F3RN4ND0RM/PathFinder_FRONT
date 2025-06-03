@@ -1,24 +1,23 @@
 :root {
-    --primary-purple: rgb(164, 4, 252);
-    --light-purple: rgba(164, 4, 252, 0.1);
-    --dark-purple: rgb(120, 0, 200);
-  }
-  
-  .text-dark-purple {
-    color: black
-  }
-  
-  .bg-purple-light {
-    background-color: var(--light-purple) !important;
-  }
-  
-  .btn-outline-purple {
-    color: var(--primary-purple);
-    border-color: var(--primary-purple);
-  }
-  
-  .btn-outline-purple:hover {
-    background-color: var(--primary-purple);
-    color: white;
-  }
-  
+  --primary-purple: rgb(164, 4, 252);
+  --light-purple: rgba(164, 4, 252, 0.1);
+  --dark-purple: rgb(120, 0, 200);
+}
+
+.text-dark-purple {
+  color: black;
+}
+
+.bg-purple-light {
+  background-color: var(--light-purple) !important;
+}
+
+.btn-outline-purple {
+  color: var(--primary-purple);
+  border-color: var(--primary-purple);
+}
+
+.btn-outline-purple:hover {
+  background-color: var(--primary-purple);
+  color: white;
+}

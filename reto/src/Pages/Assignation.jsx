@@ -1,23 +1,25 @@
-import React from "react";
-import {UserView} from "../components/UserView";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { TfsView } from "../components/TfsView";
 import { ManagerView } from "../components/ManagerView";
 
-
 export default function Assignation() {
   const level = localStorage.getItem("userLevel");
-  //const token = localStorage.getItem("authToken");
-  return (
-    <div>
-      {level === "Usuario" && <UserView />}
-      {level === "TFS" && <TfsView />}
-      {level === "Manager" && <ManagerView />}
-    </div>
-  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (level === "Usuario") {
+      navigate("/home"); // 🔁 redirect if not authorized
+    }
+  }, [level, navigate]);
+
+  if (level === "TFS") {
+    return <TfsView />;
+  }
+
+  if (level === "Manager") {
+    return <ManagerView />;
+  }
+
+  return null; // or a loading spinner if desired
 }
-// id_12
-// Desde el rol de staff
-// Función para obtener roles sugeridos desde el backend (GET /suggested-roles).
-// Este llamado debe realizarse cuando el componente se monta y mostrar la lista en la interfaz.
-// Mostrar los roles sugeridos
-// Esta información debe presentarse de forma clara al usuario para ayudarle a tomar decisiones

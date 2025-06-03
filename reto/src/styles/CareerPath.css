@@ -1,28 +1,26 @@
 :root {
   --accent-color: #8a2be2;
   --dark-gray: #1a1a1a;
-  --light-gray: #ffffff; /* White background */
-  --card-bg: #f1f1f1; /* Gray card box */
+  --light-gray: #ffffff;
+  --card-bg: #f1f1f1;
 }
 
-/* Container */
+/* ---------- CONTENEDOR PRINCIPAL ---------- */
 .career-path-container {
   display: flex;
-  background-color: var(--light-gray);
+  gap: 1.5rem; /* espacio entre columnas */
+  background: var(--light-gray);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
   padding: 3rem 4rem;
-  padding-left: 30px;
-  padding-top: 30px;
-  position: relative;
   width: 100%;
+  box-sizing: border-box;
 }
 
-/* Main Content Column */
+/* ---------- COLUMNA DEL FORMULARIO ---------- */
 .goal-main {
+  flex: 1; /* ocupa todo el ancho disponible */
   max-width: 800px;
-  margin-right: auto;
-  z-index: 1;
 }
 
 .goal-main h1 {
@@ -33,7 +31,6 @@
   position: relative;
   display: inline-block;
 }
-
 .goal-main h1::after {
   content: "";
   position: absolute;
@@ -44,7 +41,6 @@
   background: linear-gradient(90deg, var(--accent-color), #9370db);
   border-radius: 2px;
 }
-
 .goal-main p {
   font-size: 1.05rem;
   line-height: 1.7;
@@ -52,16 +48,10 @@
   margin-bottom: 2rem;
 }
 
-/* Form styles */
-form {
-  position: relative;
-}
-
+/* ---------- FORMULARIO ---------- */
 .form-group {
   margin-bottom: 2rem;
-  position: relative;
 }
-
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
@@ -69,134 +59,55 @@ form {
   color: #222;
   font-size: 1.05rem;
 }
-
 .form-group textarea {
-  background-color: #f1f1f1;
+  width: 100%;
+  background: #f1f1f1;
   border: 1px solid #ccc;
   border-radius: 14px;
   padding: 1.2rem 1.5rem;
-  width: 100%;
-  resize: none;
   font-size: 1rem;
+  resize: none;
   color: #333;
-  transition: all 0.3s ease;
+  transition: 0.3s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
-
 .form-group textarea:focus {
   outline: none;
-  background-color: #fff;
+  background: #fff;
   border-color: #aaa;
   box-shadow: 0 5px 15px rgba(136, 136, 255, 0.2);
   transform: translateY(-2px);
 }
-
 textarea::placeholder {
   color: #999;
   font-style: italic;
-  font-size: 0.95rem;
 }
 
-/* Button */
+/* ---------- BOTÓN ---------- */
 button {
-  background-color: var(--accent-color);
-  color: white;
+  background: var(--accent-color);
+  color: #fff;
   border: none;
   border-radius: 10px;
   padding: 12px 28px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
 button:hover {
-  background-color: #6a1ab8;
+  background: #6a1ab8;
   transform: translateY(-2px);
 }
-
 button:active {
   transform: translateY(-1px);
 }
-
-.goal-sidecard {
-  position: absolute;
-  top: 160px;
-  left: calc(100% - 340px); /* ✅ Move it closer to the form */
-  width: 300px;
-  padding: 1.5rem 1.5rem;
-  background-color: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid #e2e2e2;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  z-index: 2;
-}
-
-.goal-sidecard h3 {
-  font-size: 1.1rem;
-  color: var(--accent-color);
-  margin-bottom: 1rem;
-}
-
-.goal-sidecard ul {
-  list-style: none;
-  padding-left: 0;
-  font-size: 0.95rem;
-  color: #444;
-}
-
-.goal-sidecard li {
-  margin-bottom: 0.8rem;
-  position: relative;
-  padding-left: 20px;
-}
-
-.goal-sidecard li::before {
-  content: "✔";
-  color: var(--accent-color);
-  position: absolute;
-  left: 0;
-}
-
-/* Responsive */
-@media (max-width: 992px) {
-  .career-path-container {
-    flex-direction: column;
-    padding: 2rem;
-  }
-
-  .goal-sidecard {
-    display: none;
-  }
-
-  .goal-main {
-    margin: 0 auto;
-  }
-}
-
-/* Fade-in animation */
-.fade-in {
-  animation: fadeIn 0.6s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Pulse effect on buttons */
 button:hover {
   animation: pulse 0.4s ease-in-out;
-}
+} /* añade efecto */
 
+/* ---------- KEYFRAMES DEL PULSE ---------- */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -210,4 +121,85 @@ button:hover {
     transform: scale(1);
     box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   }
+}
+
+/* ---------- TARJETA DE TIPS ---------- */
+.goal-sidecard {
+  order: 2;
+  width: 300px;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid #e2e2e2;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0; /*   que no se encoja */
+  height: fit-content;
+  margin-top: 9rem;
+  margin-left: 3rem;
+}
+
+.goal-sidecard h3 {
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+}
+.goal-sidecard ul {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+.goal-sidecard li {
+  margin-bottom: 0.8rem;
+  position: relative;
+  padding-left: 20px;
+}
+.goal-sidecard li::before {
+  content: "✔";
+  color: var(--accent-color);
+  position: absolute;
+  left: 0;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 992px) {
+  .career-path-container {
+    flex-direction: column;
+  }
+  .goal-sidecard {
+    display: none;
+  }
+}
+
+/* ---------- ANIMACIÓN FADE-IN ---------- */
+.fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sidebar-toggle-container {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 9999;
+}
+
+/* If sidebar is collapsed, reduce left padding */
+.layout-container.collapsed .career-path-container {
+  padding-left: 2rem;
+}
+
+/* Expand goal-main when sidebar is collapsed */
+.layout-container.collapsed .goal-main {
+  max-width: none;
 }

@@ -1,11 +1,13 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/Sidebar.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
-function Sidebar() {
+function Sidebar({ collapsed, setCollapsed }) {
   const navigate = useNavigate();
-  const level = localStorage.getItem("userLevel"); // "Usuario", "TFS", or "Manager"
+  const level = localStorage.getItem("userLevel");
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -13,73 +15,84 @@ function Sidebar() {
     navigate("/");
   };
 
-  const isAdvancedUser = level === "TFS" || level === "Manager";
+  const isManager = level === "Manager";
+  const isTFS = level === "TFS";
+  const isUsuario = level === "Usuario";
+
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
 
   return (
-    <div className="sidebar-container text-white d-flex flex-column">
-      <div>
-        <img
-          src="/img/Logo1.png"
-          alt="accenture logo"
-          className="mb-4"
-          style={{
-            height: "35px",
-            objectFit: "contain",
-            display: "block",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        />
+    <div className="sidebar-wrapper">
+      <div className={`sidebar-container ${collapsed ? "collapsed" : ""}`}>
+        <div className="sidebar-top">
+          {!collapsed && (
+            <img
+              src="/img/Logo1.png"
+              alt="accenture logo"
+              className="accenture-logo"
+            />
+          )}
+          <button className="internal-collapse-btn" onClick={toggleSidebar}>
+            <i className="bi bi-list"></i>
+          </button>
+        </div>
 
         <ul className="nav flex-column w-100">
           <li className="sidebar-link-container">
             <Link to="/home" className="sidebar-link fs-5 fw-light">
-              Home
+              {!collapsed && "Home"}
             </Link>
           </li>
 
-          {isAdvancedUser && (
+          {/* Solo Manager puede ver Dashboard */}
+          {isManager && (
             <li className="sidebar-link-container">
               <Link to="/dashboard" className="sidebar-link fs-5 fw-light">
-                Dashboard
+                {!collapsed && "Dashboard"}
               </Link>
             </li>
           )}
 
           <li className="sidebar-link-container">
             <Link to="/career" className="sidebar-link fs-5 fw-light">
-              Career Path
+              {!collapsed && "Career Path"}
             </Link>
           </li>
 
           <li className="sidebar-link-container">
             <Link to="/courses" className="sidebar-link fs-5 fw-light">
-              Courses
+              {!collapsed && "Courses"}
             </Link>
           </li>
 
-          <li className="sidebar-link-container">
-            <Link to="/assignation" className="sidebar-link fs-5 fw-light">
-              Assignation
-            </Link>
-          </li>
-
+          {/* Ocultar Assignation si es Usuario */}
+          {!isUsuario && (
+            <li className="sidebar-link-container">
+              <Link to="/assignation" className="sidebar-link fs-5 fw-light">
+                {!collapsed && "Assignation"}
+              </Link>
+            </li>
+          )}
 
           <li className="sidebar-link-container">
             <Link to="/profile" className="sidebar-link fs-5 fw-light">
-              Profile
+              {!collapsed && "Profile"}
             </Link>
           </li>
         </ul>
-      </div>
 
-      <div className="logout-button-container mt-auto p-3">
-        <button
-          className="btn btn-outline-light w-100 fw-bold"
-          onClick={handleLogout}
-        >
-          Log out
-        </button>
+        <div className="logout-button-container mt-auto p-3">
+          {!collapsed && (
+            <button
+              className="btn btn-outline-light w-100 fw-bold"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,199 @@
+
+
+/* Estructura principal */
+.create-project-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--light-purple) 0%, var(--lighter-gray) 100%);
+  padding: 2rem;
+}
+
+.project-form-card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 700px;
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-form-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(138, 43, 226, 0.15);
+}
+
+.project-form-card .card-body {
+  padding: 3rem;
+}
+
+/* Títulos y textos */
+.form-title {
+  color: black;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: -0.5px;
+  position: relative;
+}
+
+.form-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--dark-purple);
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+.form-label {
+  color: var(--dark-purple);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+/* Campos de formulario */
+.form-textarea,
+.form-date-input {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  background-color: var(--white);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.form-textarea:focus,
+.form-date-input:focus {
+  border-color: var(--dark-purple);
+  box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+  outline: none;
+}
+
+.form-textarea {
+  min-height: 60px;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.6;
+}
+
+.form-text-muted {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+/* Botón de enviar */
+.submit-button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.submit-button:hover {
+  background-color: #6a1ab8;
+  transform: translateY(-2px);
+  color: white;
+}
+
+.submit-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.submit-button:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Efecto para el textarea autoajustable */
+.form-textarea[style] {
+  transition: height 0.25s ease-out;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.project-form-card {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .create-project-wrapper {
+    padding: 1.5rem;
+    align-items: flex-start;
+  }
+  
+  .project-form-card .card-body {
+    padding: 2rem;
+  }
+  
+  .form-title {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .project-form-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
+}
+
+.custom-alert-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  width: 300px; /* o 250px si lo quieres más compacto */
+}

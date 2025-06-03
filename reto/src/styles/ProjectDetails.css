@@ -1,0 +1,141 @@
+.project-details-page .goal-main {
+    max-width: 500px;
+    margin-right: auto;
+    z-index: 1;
+  }
+  
+  .goal-main h4 {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .goal-main h4::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), #9370db);
+    border-radius: 2px;
+  }
+
+  /* Button */
+button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background-color: #6a1ab8;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+.modal-backdrop.show {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.modal-dialog {
+  max-width: 800px;
+}
+
+.custom-modal-body {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Estilos para los botones */
+.btn-success {
+  background-color: #28a745; /* Verde de Bootstrap */
+  border-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Rojo de Bootstrap */
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.btn-accenture {
+  background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
+  color: white;
+}
+
+.btn-accenture:hover {
+  background-color: #8A00D6;
+  border-color: #8A00D6;
+  color: white;
+}
+
+.outline-purple-add-role{
+    margin-top: 10px;
+  background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
+  color: white;
+}
+
+.outline-purple-add-role:hover{
+background-color: #8A00D6;
+  border-color: #8A00D6;
+  color: white;
+}
+
+.outline-purple-submit-role{
+  margin-top: 10px;
+  margin-left: 20px;
+  background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
+  color: white;
+}
+
+.outline-purple-submit-role:hover{
+  background-color: #8A00D6;
+  border-color: #8A00D6;
+  color: white;
+}
+.remove {
+  color: var(--primary-purple);
+  background-color: white;
+  border: 1px solid var(--primary-purple); /* ⬅️ Aquí defines borde morado */
+  padding: 0.35rem 0.8rem; /* Opcional: tamaño más pequeño */
+  cursor: pointer;
+}
+
+.remove:hover {
+  background-color: var(--primary-purple);
+  color: white;
+}
+.form-control:focus {
+  border-color: var(--primary-purple); /* borde morado */
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25); /* sombra morada */
+}
+
+
+
+

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/logo.css";
 
 export default function LoginPage() {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [email, setEmail] = useState("");
   const [hasPassword, setHasPassword] = useState(null);
   const [pass, setPass] = useState("");
@@ -19,7 +20,7 @@ export default function LoginPage() {
   const handleNoPassword = async () => {
     try {
       await axios.post(
-        "https://pathfinder-back-hnoj.onrender.com/employees/login",
+        `${API_BACK}/employees/login`,
         {
           email,
           pass: "",
@@ -39,7 +40,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://pathfinder-back-hnoj.onrender.com/employees/login",
+      `${API_BACK}/employees/login`,
         { email, pass }
       );
 
@@ -49,7 +50,7 @@ export default function LoginPage() {
 
       // 🟣 Fetch the user's name immediately after login
       const nameResponse = await axios.get(
-        "https://pathfinder-back-hnoj.onrender.com/employees/",
+        `${API_BACK}/employees/`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -64,7 +65,7 @@ export default function LoginPage() {
         console.warn("No user name received from server.");
       }
 
-      navigate("/Home");
+      navigate("/home");
     } catch (err) {
       console.error("Login error:", err);
       setError("Incorrect email or password.");
@@ -76,7 +77,7 @@ export default function LoginPage() {
   const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "https://pathfinder-back-hnoj.onrender.com/employees/signup",
+      `${API_BACK}/employees/signup`,
         {
           email,
           otp,

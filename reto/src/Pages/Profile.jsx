@@ -1,14 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
+import SidebarExpandButton from "../components/SidebarExpandButton";
+import ProjectTimeline from "../components/ProjectTimeline";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/UserContext";
 import "../styles/Profile.css";
 
-function Profile() {
+function Profile({ collapsed, setCollapsed }) {
   const navigate = useNavigate();
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
   const [userAbilities, setUserAbilities] = useState([]);
   const [completedCourses, setCompletedCourses] = useState([]);
+  const isSidebarCollapsed = collapsed;
 
   const token = localStorage.getItem("authToken");
 
@@ -16,7 +20,7 @@ function Profile() {
     const fetchProfileData = async () => {
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          `${API_BACK}/employees/`,
           {
             method: "GET",
             headers: {
@@ -40,7 +44,9 @@ function Profile() {
 
     const fetchInactiveProjects = async () => {
       try {
-        const apiUrl = new URL("https://pathfinder-back-hnoj.onrender.com/employees/projects");
+        const apiUrl = new URL(
+          `${API_BACK}/employees/projects`
+        );
         apiUrl.searchParams.append("status", "false");
 
         const response = await fetch(apiUrl.toString(), {
@@ -65,13 +71,18 @@ function Profile() {
           status: role.Project.status,
         }));
 
-        const inactiveProjects = formattedProjects.filter((project) => !project.status);
+        const inactiveProjects = formattedProjects.filter(
+          (project) => !project.status
+        );
 
         const projectDescriptions = inactiveProjects.map(
           (project) => `${project.name} (${project.platform})`
         );
 
-        localStorage.setItem("inactiveProjects", JSON.stringify(projectDescriptions));
+        localStorage.setItem(
+          "inactiveProjects",
+          JSON.stringify(projectDescriptions)
+        );
       } catch (error) {
         console.error("Error obteniendo proyectos inactivos:", error);
       }
@@ -80,7 +91,7 @@ function Profile() {
     const fetchCompletedCourses = async () => {
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/courses",
+          `${API_BACK}/employees/courses`,
           {
             method: "GET",
             headers: {
@@ -122,33 +133,42 @@ function Profile() {
   const storedCourses = completedCourses.length
     ? completedCourses
     : JSON.parse(localStorage.getItem("completedCourses")) || [];
-  const inactiveProjects = JSON.parse(localStorage.getItem("inactiveProjects")) || [];
+  const inactiveProjects =
+    JSON.parse(localStorage.getItem("inactiveProjects")) || [];
 
   return (
     <div className="profile-container">
-      <div className="profile-header">
-        <div className="profile-user-info">
-          <h2 className="profile-name">{name}</h2>
-          <p className="profile-role">
-            <span className="role-badge">{role}</span>
-          </p>
-          <div className="profile-info">
-            <div className="info-item">
-              <i className="fas fa-envelope"></i>
-              <span>{email}</span>
+      <div className="profile-header-wrapper">
+        {isSidebarCollapsed && (
+          <div className="sidebar-button-wrapper">
+            <SidebarExpandButton setCollapsed={setCollapsed} />
+          </div>
+        )}
+
+        <div className="profile-header">
+          <div className="header-inner">
+            <div className="profile-user-info">
+              <h2 className="profile-name">{name}</h2>
+              <p className="profile-role">
+                <span className="role-badge">{role}</span>
+              </p>
+              <div className="profile-info">
+                <div className="info-item">
+                  <i className="fas fa-envelope"></i>
+                  <span>{email}</span>
+                </div>
+                <div className="info-item assigned">
+                  <i className="fas fa-tasks"></i>
+                  <strong>Assigned: {assigned}%</strong>
+                </div>
+              </div>
             </div>
-            <div className="info-item assigned">
-              <i className="fas fa-tasks"></i>
-              <strong>Assigned: {assigned}%</strong>
-            </div>
+            <button className="edit-button" onClick={handleEdit}>
+              <i className="fas fa-edit"></i> Edit Profile
+            </button>
           </div>
         </div>
-
-        <button className="edit-button" onClick={handleEdit}>
-          <i className="fas fa-edit"></i> Edit Profile
-        </button>
       </div>
-
       <div className="profile-content">
         <div className="profile-section">
           <div className="skills-box profile-info-box">
@@ -158,11 +178,14 @@ function Profile() {
             </div>
             <div className="box-content skills-list">
               {userAbilities.length > 0 ? (
-                userAbilities.map((skill, index) => (
-                  <div key={index} className="skill-tag">
-                    <i className="fas fa-check"></i> {skill.name}
-                  </div>
-                ))
+                <div className="skills-list inline-skills">
+                  {userAbilities.map((skill, index) => (
+                    <span key={index} className="skill-tag">
+                      <i className="fas fa-check"></i> {skill.name}
+                      {index < userAbilities.length - 1 ? "," : ""}
+                    </span>
+                  ))}
+                </div>
               ) : (
                 <span>No skills added yet</span>
               )}
@@ -205,6 +228,7 @@ function Profile() {
             )}
           </div>
         </div>
+          <ProjectTimeline />
       </div>
     </div>
   );
