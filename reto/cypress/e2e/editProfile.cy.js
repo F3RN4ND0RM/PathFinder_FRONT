@@ -18,39 +18,41 @@ describe('Edit Profile Flow', () => {
   it('Changes the name in profile and resets it back', () => {
     cy.visit(`${BASE_URL}/home`);
 
-    // Confirmación de login correcto
+    // Confirm login
     cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
 
-    // Abre sidebar
+    // Open sidebar
     cy.get('.floating-expand-btn-header').click();
 
-    // Click en "Profile" desde el sidebar
+    // Click "Profile"
     cy.get('a[href="/profile"]', { timeout: 10000 }).click();
-
-    // Confirmar navegación
     cy.url({ timeout: 10000 }).should('include', '/profile');
 
-    // Click en "Edit Profile"
+    // Edit name to random
     cy.get('button.edit-button').click();
-
-    // Cambiar nombre por uno aleatorio
     const newName = `User ${Math.floor(Math.random() * 10000)}`;
     cy.get('input[name="name"]').clear().type(newName);
 
-    // Scroll down y guardar
     cy.scrollTo('bottom');
     cy.get('button.save-button').click();
 
-    // Esperar que guarde y vuelva el botón de editar
-    cy.get('button.edit-button', { timeout: 10000 }).should('exist').click();
+    // Confirm with password
+    cy.get('input[type="password"][placeholder="Your password "]', { timeout: 10000 })
+      .type(PASSWORD);
+    cy.get('button.confirm-button').click();
 
-    // Reestablecer nombre original
+    // Wait for button to reappear and restore original name
+    cy.get('button.edit-button', { timeout: 10000 }).should('exist').click();
     cy.get('input[name="name"]').clear().type(ORIGINAL_NAME);
 
     cy.scrollTo('bottom');
     cy.get('button.save-button').click();
 
-    // Confirmar visualmente que se ve el nombre correcto
+    cy.get('input[type="password"][placeholder="Your password "]', { timeout: 10000 })
+      .type(PASSWORD);
+    cy.get('button.confirm-button').click();
+
+    // Confirm final name
     cy.contains(ORIGINAL_NAME, { timeout: 10000 }).should('exist');
   });
 });
