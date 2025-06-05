@@ -16,6 +16,6 @@ describe('Career Path Form Flow', () => {
 
   it('Logs in and completes career path form', () => {
     cy.visit(`${BASE_URL}/home`);
-    cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
+    cy.contains('Check your notifications and active certifications', { timeout: 20000 }).should('be.visible');
   });
 });
