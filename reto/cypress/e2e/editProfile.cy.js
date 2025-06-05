@@ -19,7 +19,7 @@ describe('Edit Profile Flow', () => {
     cy.visit(`${BASE_URL}/home`);
 
     // Confirm login
-    cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
+    cy.contains('Check your notifications and active certifications', { timeout: 20000 }).should('be.visible');
 
     // Open sidebar
     cy.get('.floating-expand-btn-header').click();
