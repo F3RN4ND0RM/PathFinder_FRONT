@@ -1,3 +1,4 @@
+// ...importaciones
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import axios from "axios";
@@ -15,21 +16,16 @@ export default function LoginPage() {
   const [error, setError] = useState(null);
   const [infoMessage, setInfoMessage] = useState("");
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // ⬅️ agrégalo aquí
+  const [loading, setLoading] = useState(false);
 
   const handleNoPassword = async () => {
     try {
-      await axios.post(
-        `${API_BACK}/employees/login`,
-        {
-          email,
-          pass: "",
-        }
-      );
+      await axios.post(`${API_BACK}/employees/login`, {
+        email,
+        pass: "",
+      });
       setHasPassword(false);
-      setInfoMessage(
-        "Please enter the OTP code you received and set your new password."
-      );
+      setInfoMessage("Please enter the OTP code you received and set your new password.");
     } catch (err) {
       console.error("Password-less login error:", err);
       setError("Login error. Please try again.");
@@ -39,30 +35,24 @@ export default function LoginPage() {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(
-      `${API_BACK}/employees/login`,
-        { email, pass }
-      );
+      const response = await axios.post(`${API_BACK}/employees/login`, {
+        email,
+        pass
+      });
 
       const { token, level } = response.data;
       localStorage.setItem("authToken", token);
       localStorage.setItem("userLevel", level.name);
 
-      // 🟣 Fetch the user's name immediately after login
-      const nameResponse = await axios.get(
-        `${API_BACK}/employees/`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            token: token,
-          },
-        }
-      );
+      const nameResponse = await axios.get(`${API_BACK}/employees/`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+      });
 
       if (nameResponse.data && nameResponse.data.name) {
         localStorage.setItem("userName", nameResponse.data.name);
-      } else {
-        console.warn("No user name received from server.");
       }
 
       navigate("/home");
@@ -76,14 +66,11 @@ export default function LoginPage() {
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post(
-      `${API_BACK}/employees/signup`,
-        {
-          email,
-          otp,
-          pass: newPass,
-        }
-      ); //pri
+      const response = await axios.post(`${API_BACK}/employees/signup`, {
+        email,
+        otp,
+        pass: newPass,
+      });
 
       if (response.data.msg === "Employee password setted") {
         setInfoMessage("Password set successfully. You can now log in.");
@@ -92,9 +79,7 @@ export default function LoginPage() {
         setNewPass("");
         setError(null);
       } else {
-        setError(
-          "Error setting password. Please verify the OTP and try again."
-        );
+        setError("Error setting password. Please verify the OTP and try again.");
       }
     } catch (err) {
       console.error("Signup error:", err);
@@ -116,10 +101,7 @@ export default function LoginPage() {
 
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="form-label small text-uppercase text-muted"
-            >
+            <label htmlFor="email" className="form-label small text-uppercase text-muted">
               Email Address
             </label>
             <input
@@ -134,17 +116,17 @@ export default function LoginPage() {
 
           {hasPassword === null && (
             <div className="mb-4 text-center">
-              <p className="mb-3 text-muted">
-                Do you have an existing password?
-              </p>
+              <p className="mb-3 text-muted">Do you have an existing password?</p>
               <div className="d-flex justify-content-center gap-3">
                 <button
+                  type="button"
                   className="btn px-4 purple-outline-btn rounded-pill"
                   onClick={() => setHasPassword(true)}
                 >
                   Yes
                 </button>
                 <button
+                  type="button"
                   className="btn px-4 purple-outline-btn rounded-pill"
                   onClick={handleNoPassword}
                 >
@@ -165,6 +147,7 @@ export default function LoginPage() {
                     Password
                   </label>
                   <button
+                    type="button"
                     className="btn btn-link p-0 text-decoration-none small purple-link"
                     onClick={() => setShowPassword(!showPassword)}
                   >
@@ -181,6 +164,7 @@ export default function LoginPage() {
                 />
               </div>
               <button
+                type="button"
                 className="btn w-100 py-2 mb-3 purple-btn rounded-pill shadow-sm"
                 onClick={handleLogin}
                 disabled={loading}
@@ -193,10 +177,7 @@ export default function LoginPage() {
           {hasPassword === false && (
             <>
               <div className="mb-4">
-                <label
-                  htmlFor="otp"
-                  className="form-label small text-uppercase text-muted"
-                >
+                <label htmlFor="otp" className="form-label small text-uppercase text-muted">
                   Verification Code
                 </label>
                 <input
@@ -209,10 +190,7 @@ export default function LoginPage() {
                 />
               </div>
               <div className="mb-4">
-                <label
-                  htmlFor="newPass"
-                  className="form-label small text-uppercase text-muted"
-                >
+                <label htmlFor="newPass" className="form-label small text-uppercase text-muted">
                   New Password
                 </label>
                 <input
@@ -225,6 +203,7 @@ export default function LoginPage() {
                 />
               </div>
               <button
+                type="button"
                 className="btn w-100 py-2 purple-btn rounded-pill shadow-sm"
                 onClick={handleSignup}
               >
