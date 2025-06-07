@@ -15,6 +15,7 @@ Este repositorio contiene el **frontend** de **Pathfinder**, una aplicación des
 │   ├── components/  # Componentes reutilizables
 │   ├── pages/       # Páginas o vistas (si aplica)
 │   └── styles/      # Estilos adicionales o personalizados
+│   └── helpers/     # Scripts adicionales que añaden funcionalidades extra
 ├── .env.local       # Variables de entorno
 ├── package.json     # Dependencias y scripts
 └── ...
