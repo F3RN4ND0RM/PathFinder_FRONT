@@ -1,6 +1,7 @@
 /* Button */
 .new-project-btn {
-  background-color: var(--accent-color);
+   background-color: #A100FF; /* Morado de Accenture */
+  border-color: #A100FF;
   color: white;
   border: none;
   border-radius: 10px;
@@ -59,6 +60,7 @@ textarea.form-control:focus {
 .search-bar-container {
   position: relative;
   width: 250px;
+  margin-left: 60%;
 }
 
 .search-icon {

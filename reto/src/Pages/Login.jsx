@@ -1,12 +1,11 @@
-// ...importaciones
-import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import "../styles/logo.css";
 
 export default function LoginPage() {
-  const API_BACK = process.env.REACT_APP_API_URL; 
+  const API_BACK = process.env.REACT_APP_API_URL;
   const [email, setEmail] = useState("");
   const [hasPassword, setHasPassword] = useState(null);
   const [pass, setPass] = useState("");
@@ -17,6 +16,14 @@ export default function LoginPage() {
   const [infoMessage, setInfoMessage] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  // Verificar si el token ya está en localStorage y redirigir si es necesario
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      navigate("/home");  // Redirige a /home si ya está logueado
+    }
+  }, [navigate]);
 
   const handleNoPassword = async () => {
     try {
@@ -41,7 +48,7 @@ export default function LoginPage() {
       });
 
       const { token, level } = response.data;
-      localStorage.setItem("authToken", token);
+      localStorage.setItem("authToken", token);  // Asegurarse de guardar el token
       localStorage.setItem("userLevel", level.name);
 
       const nameResponse = await axios.get(`${API_BACK}/employees/`, {
@@ -55,7 +62,7 @@ export default function LoginPage() {
         localStorage.setItem("userName", nameResponse.data.name);
       }
 
-      navigate("/home");
+      navigate("/home");  // Redirigir a /home después de iniciar sesión
     } catch (err) {
       console.error("Login error:", err);
       setError("Incorrect email or password.");
@@ -148,10 +155,10 @@ export default function LoginPage() {
                   </label>
                   <button
                     type="button"
-                    className="btn btn-link p-0 text-decoration-none small purple-link"
+                    className="eye"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? "Hide" : "Show"}
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
                 </div>
                 <input

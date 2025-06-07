@@ -6,6 +6,8 @@ import { Container, Row, Col, Alert, Spinner, Button } from "react-bootstrap";
 import "../styles/ManagerView.css";
 import SearchIcon from "@mui/icons-material/Search"
 
+
+
 export const ManagerView = () => {
   const API_BACK = process.env.REACT_APP_API_URL;
   const [staffList, setStaffList] = useState([]);

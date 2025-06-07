@@ -37,7 +37,14 @@ export default function Dashboard() {
   }, []);
 
   if (error) return <div>Error: {error}</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data) return (
+  <div className="d-flex flex-column align-items-center justify-content-center py-5 my-5">
+    <div className="spinner-border text-primary"  role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+   
+  </div>
+);
 
   return (
     <Box

@@ -1,39 +1,71 @@
-.notification-wrapper {
-  position: relative;
-  margin-left: 15px;
+.notification-btn-container {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 }
 
-.notification-button {
+.notification-btn {
   background: transparent;
-  padding: 0;
   border: none;
+  padding: 0.25rem;
   cursor: pointer;
-  position: relative;
-  display: block;
-  outline: none;
-  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.notification-button:focus {
-  outline: none;
-  border: none;
-  box-shadow: none;
+.notification-btn__icon {
+  width: 20px;
+  height: 20px;
+  fill: #6c757d; /* Color gris de Bootstrap */
+  transition: fill 0.2s ease;
+}
+
+.notification-btn:hover .notification-btn__icon {
+  fill: #495057; /* Gris más oscuro al hover */
+}
+
+.notification-btn.ringing .notification-btn__icon {
+  animation: ring 0.5s ease-in-out;
+  fill: #6f42c1; /* Morado solo durante la animación */
+}
+
+.notification-btn__counter {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: bold;
+}
+
+/* Elimina estos estilos si existen: */
+.notification-wrapper,
+.notification-btn,
+.bell-icon {
+  background-color: transparent !important;
 }
 
 .bell-icon {
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
+}
+
+.bell-icon {
+  width: 20px;
+  height: 20px;
   fill: white;
   display: block;
   transition: fill 0.3s ease;
-}
-
-.notification-button:hover .bell-icon {
-  fill: #111; /* mismo color, sin cambio */
-}
-
-.notification-button.ringing .bell-icon {
-  animation: ring 0.5s ease-in-out;
 }
 
 @keyframes ring {
@@ -54,22 +86,6 @@
   }
 }
 
-.notification-counter {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #ff4757;
-  color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 11px;
-  font-weight: bold;
-  box-shadow: 0 0 0 2px white;
-}
 
 /* Modal sin borde ni sombra */
 .modern-notification-modal .modal-content {
@@ -88,7 +104,7 @@
 .modern-notification-modal .modal-title-custom {
   display: flex;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .modern-notification-modal .close {
@@ -101,11 +117,10 @@
 .hero-section {
   background: linear-gradient(to right, #9b4dff, #b388ff);
   color: white;
-  padding: 3rem 2rem 2rem 2rem;
-  margin: 0;
-  box-sizing: border-box;
-  width: 100%;
-  position: relative; /* ✅ necesario para que el botón absoluto se posicione dentro */
+  padding: 0.5rem 1rem; /* Reducido de 3rem */
+  height: auto; /* Elimina altura fija */
+  display: flex;
+  align-items: center;
 }
 
 .hero-text {
@@ -138,11 +153,8 @@
 }
 
 .header-flex-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: nowrap;
+  width: 100%;
+  padding: 0 0.5rem;
 }
 .left-button-area {
   position: absolute;
@@ -156,9 +168,6 @@
   min-width: 0;
 }
 
-.notification-wrapper {
-  flex-shrink: 0;
-}
 
 /*.floating-collapse-btn-header svg {
   width: 42px;
@@ -179,18 +188,9 @@
   margin-top: -5rem; /* Optional: adjust how high you want it */
 }
 .floating-expand-btn-header {
-  background-color: rgba(255, 255, 255, 0.2); /* Light semi-transparent grey */
-  color: white; /* The > symbol */
-  border: none;
-  font-size: 2.5rem;
-  font-weight: 900;
-  cursor: pointer;
-  transform: rotate(-10deg);
-  padding: 0.3rem 0.8rem; /* Add spacing for better click area */
-  margin-right: 0.6rem;
-  line-height: 1;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+  font-size: 1.2rem;
+  padding: 0.1rem 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .floating-expand-btn-header:hover {
@@ -202,4 +202,18 @@
   display: flex;
   align-items: center; /* ✅ Alinea verticalmente > y título */
   gap: 0.8rem; /* Espacio entre el símbolo y el texto */
+}
+.header-title {
+  font-size: 1.2rem; /* Reducido */
+  margin: 0;
+  font-weight: 600;
+}
+.header-subtitle {
+  font-size: 0.8rem;
+  margin: 0;
+  opacity: 0.8;
+}
+/* Ajustes para el texto */
+.header-text-area {
+  padding: 0.25rem 0;
 }
