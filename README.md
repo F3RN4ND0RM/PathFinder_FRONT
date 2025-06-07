@@ -32,7 +32,7 @@ Este repositorio contiene el **frontend** de **Pathfinder**, una aplicación des
 1. Clona el repositorio:
 
 ```bash
-git clone https://github.com/tu-usuario/pathfinder.git
+git clone https://github.com/F3RN4ND0RM/PathFinder_FRONT.git
 cd pathfinder
 ```
 
