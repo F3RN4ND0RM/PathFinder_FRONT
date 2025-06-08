@@ -273,3 +273,39 @@
 .homepage-add-button-container .add-button button:last-child:hover {
   background-color: #333333;
 }
+
+.mark-done-btn {
+  background-color: var(--primary-purple);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mark-done-btn:hover {
+  background-color: #5a2dd0;
+}
+
+.calendar-reminder-wrapper {
+  background: white;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.reminder-section ul {
+  padding-left: 1rem;
+}
+
+.reminder-list li {
+  margin-bottom: 0.25rem;
+}
+
+
+

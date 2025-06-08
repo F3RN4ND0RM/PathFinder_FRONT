@@ -26,6 +26,14 @@ export default function LoginPage() {
   }, [navigate]);
 
   const handleNoPassword = async () => {
+    setError(null);
+    setInfoMessage(""); 
+
+    if (!email || email.trim() === "") {
+      setError("Please enter a valid email.");
+      return;
+    }
+
     try {
       await axios.post(`${API_BACK}/employees/login`, {
         email,
@@ -39,7 +47,10 @@ export default function LoginPage() {
     }
   };
 
+
   const handleLogin = async () => {
+    setError(null);
+    setInfoMessage(""); 
     setLoading(true);
     try {
       const response = await axios.post(`${API_BACK}/employees/login`, {
@@ -72,6 +83,8 @@ export default function LoginPage() {
   };
 
   const handleSignup = async () => {
+    setError(null);
+    setInfoMessage(""); 
     try {
       const response = await axios.post(`${API_BACK}/employees/signup`, {
         email,
@@ -128,7 +141,10 @@ export default function LoginPage() {
                 <button
                   type="button"
                   className="btn px-4 purple-outline-btn rounded-pill"
-                  onClick={() => setHasPassword(true)}
+                  onClick={() => {setHasPassword(true);
+                                 setError(null);
+                  }
+                  }
                 >
                   Yes
                 </button>

@@ -22,7 +22,7 @@
 
 .react-calendar__navigation {
   display: grid;
-  grid-template-columns: 1fr 1fr 4fr 1fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
   align-items: center;
   background: linear-gradient(135deg, #9b4dff, #b388ff);
   color: white;
@@ -45,7 +45,7 @@
 
 .react-calendar__navigation button {
   background: none;
-  color: white;
+  color: black;
   border: none;
   font-size: 0.9rem;
   cursor: pointer;
@@ -55,6 +55,11 @@
 
 .react-calendar__navigation button:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus{
+  background: none;
 }
 
 .react-calendar__month-view__weekdays {
@@ -83,12 +88,6 @@
   background: rgba(155, 77, 255, 0.15);
   border-radius: 10px;
   color: #333;
-}
-
-.react-calendar__tile--active {
-  background: #9b4dff !important;
-  color: white !important;
-  border-radius: 10px;
 }
 
 .react-calendar__tile--now {
@@ -125,3 +124,51 @@
   background: linear-gradient(90deg, #9b4dff, #b388ff);
   border-radius: 2px;
 }
+
+.react-calendar__year-view__months__month,
+.react-calendar__decade-view__years__year {
+  background: #f3efff;
+  color: var(--primary-purple);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  padding: 0.9rem 0.5rem;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.react-calendar__year-view__months__month:hover,
+.react-calendar__decade-view__years__year:hover {
+  background-color: #e3d7ff;
+  cursor: pointer;
+}
+
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button {
+  display: none !important;
+}
+
+.react-calendar__year-view__months__month {
+  background-color: #f3ecff;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 4px;
+  color: var(--primary-purple);
+  font-weight: 600;
+  transition: 0.3s ease all;
+  border: none;
+}
+
+.react-calendar__year-view__months__month:hover {
+  background-color: #e3d5ff;
+  cursor: pointer;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+
+
