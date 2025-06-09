@@ -37,25 +37,47 @@ export default function Dashboard() {
   }, []);
 
   if (error) return <div>Error: {error}</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data) return (
+  <div className="d-flex flex-column align-items-center justify-content-center py-5 my-5">
+    <div className="spinner-border text-primary"  role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+   
+  </div>
+);
 
   return (
-    <Box
-      sx={{ padding: "2rem", backgroundColor: "#f4f6f8", minHeight: "100vh" }}
-    >
-      <KpiGrid assigned={data.Assigned} />
-      <Box
-        mt={4}
-        display="flex"
-        gap={3}
-        flexWrap="nowrap"
-        alignItems="flex-start"
-      >
-        <Box flexGrow={1}>
-          <StatsCard monthlyAssigned={data.monthlyAssigned} />
-        </Box>
-        <Box width="300px">
-          <AcquisitionsCard courses={data.coursesByPopularity} />
+    <Box sx={{ padding: "2rem", backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
+      <Box sx={{ maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
+        <KpiGrid assigned={data.Assigned} />
+
+        <Box
+          mt={4}
+          display="flex"
+          flexWrap="wrap"
+          gap={4}
+          justifyContent="space-between"
+          alignItems="stretch"
+        >
+          <Box
+            sx={{
+              flex: { xs: "1 1 100%", md: "1 1 65%" },
+              maxWidth: { xs: "100%", md: "65%" },
+              minWidth: "280px",
+            }}
+          >
+            <StatsCard monthlyAssigned={data.monthlyAssigned} />
+          </Box>
+
+          <Box
+            sx={{
+              flex: { xs: "1 1 100%", md: "1 1 32%" },
+              maxWidth: { xs: "100%", md: "32%" },
+              height: "100%",
+            }}
+          >
+            <AcquisitionsCard courses={data.coursesByPopularity} />
+          </Box>
         </Box>
       </Box>
     </Box>

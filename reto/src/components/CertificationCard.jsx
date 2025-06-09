@@ -15,9 +15,7 @@ const CertificationCard = ({ name, description, expiration }) => {
           <span className="badge bg-purple-light text-dark-purple">
             Expira: {expirationDate}
           </span>
-          <Button variant="outline-purple" size="sm">
-            Ver certificación
-          </Button>
+          
         </div>
       </Card.Body>
     </Card>

@@ -92,7 +92,8 @@ const StatsCard = ({ monthlyAssigned }) => {
           backgroundColor: "#fff",
           width: "100%",
           maxWidth: "800px",
-          minHeight: "50px",
+          minWidth: "300px",
+          overflowX: "auto",
           position: "relative",
           borderTop: "4px solid #9b4dff",
         }}

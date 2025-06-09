@@ -40,6 +40,13 @@ const HomePage = () => {
     localStorage.setItem("quickNotesList", JSON.stringify(initial));
     return initial;
   });
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [reminders, setReminders] = useState(() => {
+    const stored = localStorage.getItem("calendarReminders");
+    return stored ? JSON.parse(stored) : {};
+  });
+  const [newReminder, setNewReminder] = useState("");
+
 
   useEffect(() => {
     fetchUserName();
@@ -194,27 +201,14 @@ const HomePage = () => {
                       <span className="note-text">{note}</span>
                       <div className="note-actions">
                         <button
-                          className="note-check-btn"
-                          title="Mark as done"
-                          onClick={() => alert(`✔️ Marked as done: ${note}`)}
-                        >
-                          <i className="bi bi-check-circle-fill"></i>
-                        </button>
-                        <button
-                          className="note-delete-btn"
-                          title="Delete note"
+                          className="mark-done-btn"
                           onClick={() => {
-                            const updatedNotes = savedNotes.filter(
-                              (_, i) => i !== index
-                            );
+                            const updatedNotes = savedNotes.filter((_, i) => i !== index);
                             setSavedNotes(updatedNotes);
-                            localStorage.setItem(
-                              "quickNotesList",
-                              JSON.stringify(updatedNotes)
-                            );
+                            localStorage.setItem("quickNotesList", JSON.stringify(updatedNotes));
                           }}
                         >
-                          <i className="bi bi-trash-fill"></i>
+                          ✔ Mark as Done
                         </button>
                       </div>
                     </li>
@@ -253,7 +247,49 @@ const HomePage = () => {
             </div>
           </Col>
           <Col md={4}>
-            <MiniCalendar />
+            <div className="calendar-reminder-wrapper">
+              <MiniCalendar onDateSelect={setSelectedDate} reminders={reminders} />
+              <div className="reminder-section mt-3">
+                <h6 className="mb-2" style={{ fontWeight: "bold" }}>
+                  Reminders for {selectedDate.toDateString()}
+                </h6>
+                <ul className="reminder-list mb-2">
+                  {(reminders[selectedDate.toDateString()] || []).length === 0 ? (
+                    <li className="text-muted small">No reminders for this day</li>
+                  ) : (
+                    reminders[selectedDate.toDateString()].map((rem, idx) => (
+                      <li key={idx} className="small">{rem}</li>
+                    ))
+                  )}
+                </ul>
+
+                <div className="d-flex">
+                  <input
+                    type="text"
+                    placeholder="Add a reminder..."
+                    className="form-control form-control-sm"
+                    value={newReminder}
+                    onChange={(e) => setNewReminder(e.target.value)}
+                  />
+                  <button
+                    className="btn btn-sm btn-primary ms-2"
+                    onClick={() => {
+                      if (!newReminder.trim()) return;
+                      const key = selectedDate.toDateString();
+                      const updated = {
+                        ...reminders,
+                        [key]: [...(reminders[key] || []), newReminder.trim()],
+                      };
+                      setReminders(updated);
+                      localStorage.setItem("calendarReminders", JSON.stringify(updated));
+                      setNewReminder("");
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
           </Col>
         </Row>
 

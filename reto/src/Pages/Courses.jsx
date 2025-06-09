@@ -92,8 +92,7 @@ const Courses = () => {
                     title={course.name}
                     description={course.description}
                     completed={course.Courseinfo.status}
-                    actionText="Continue"
-                    actionLink="#"
+                    actionText="Keep Learning"
                     showCertificate={false}
                     onDelete={() => handleDelete(course.name)}
                   />
