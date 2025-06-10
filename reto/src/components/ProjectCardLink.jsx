@@ -15,20 +15,20 @@ const ProjectCardLink = ({ project }) => {
       <Card.Body>
         <div className="project-header">
           <h3 className="project-name">{project.name}</h3>
-          <Badge bg="purple" className="project-role">Proyecto</Badge>
+          <Badge bg="purple" className="project-role">Project</Badge>
         </div>
         <div className="project-details">
           <div className="project-detail-item">
-            <span className="detail-label">Descripción:</span>
+            <span className="detail-label">Description:</span>
             <span className="detail-value">{project.description}</span>
           </div>
           <div className="project-detail-item">
-            <span className="detail-label">Inicio:</span>
-            <span className="detail-value">{project.startDate || 'No definido'}</span>
+            <span className="detail-label">Start:</span>
+            <span className="detail-value">{project.startDate || 'Not defined'}</span>
           </div>
           <div className="project-detail-item">
-            <span className="detail-label">Fin:</span>
-            <span className="detail-value">{project.endDate || 'En curso'}</span>
+            <span className="detail-label">End:</span>
+            <span className="detail-value">{project.endDate || 'In progress'}</span>
           </div>
         </div>
       </Card.Body>

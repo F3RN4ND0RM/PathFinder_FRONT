@@ -158,7 +158,7 @@ const ProjectDetail = () => {
     const idAssignation = selectedRole?.id || selectedRole?._id;
 
     try {
-      const res = await fetch(`${API_BACK}/projects`, {
+      const res = await fetch(`${API_BACK}/projects/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

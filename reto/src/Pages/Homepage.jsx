@@ -272,7 +272,7 @@ const HomePage = () => {
                     onChange={(e) => setNewReminder(e.target.value)}
                   />
                   <button
-                    className="btn btn-sm btn-primary ms-2"
+                    className="btn save-note-btn ms-2"
                     onClick={() => {
                       if (!newReminder.trim()) return;
                       const key = selectedDate.toDateString();
