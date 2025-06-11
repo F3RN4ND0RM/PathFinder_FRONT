@@ -139,6 +139,7 @@ const Courses = () => {
                     showCertificate={false}
                     onDelete={() => handleDelete(course.name)}
                     onEdit={(newStatus) => handleEdit(course.id, newStatus)}
+                    isEditable={true}
                   />
                 </Col>
               ))}
@@ -162,6 +163,7 @@ const Courses = () => {
                     showCertificate={true}
                     onDelete={() => handleDelete(course.name)}
                     onEdit={(newValue) => handleEdit(course.id, newValue)}
+                    isEditable={false}
                   />
                 </Col>
               ))}

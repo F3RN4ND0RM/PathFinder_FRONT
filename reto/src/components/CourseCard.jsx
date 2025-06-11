@@ -13,6 +13,7 @@ const CourseCard = ({
   showCertificate,
   onActionClick,
   onEdit,
+  isEditable,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -94,21 +95,23 @@ const CourseCard = ({
               ) : (
                 <>
                   <span>Completed: {completed}%</span>
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => setEditing(true)}
-                    style={{
-                      padding: "2px 5px",
-                      fontSize: "0.6rem",
-                      marginLeft: "6px",
-                      lineHeight: "1",
-                      height: "22px",
-                    }}
-                    title="Edit progress"
-                  >
-                    ✏️
-                  </Button>
+                  {isEditable && (
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => setEditing(true)}
+                      style={{
+                        padding: "2px 5px",
+                        fontSize: "0.6rem",
+                        marginLeft: "6px",
+                        lineHeight: "1",
+                        height: "22px",
+                      }}
+                      title="Edit progress"
+                    >
+                      ✏️
+                    </Button>
+                  )}
                 </>
               )}
             </div>

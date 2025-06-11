@@ -1,6 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import MiniCalendar from "../components/MiniCalendar";
 import CertificationCard from "../components/CertificationCard";
@@ -16,6 +17,7 @@ import {
   Navigation,
   Pagination,
 } from "swiper/modules";
+
 
 const HomePage = () => {
   const API_BACK = process.env.REACT_APP_API_URL;
@@ -33,6 +35,8 @@ const HomePage = () => {
   const [name, setName] = useState(
     localStorage.getItem("userName") || "Usuario"
   );
+  const swiperRef = useRef();
+
   const [savedNotes, setSavedNotes] = useState(() => {
     const stored = localStorage.getItem("quickNotesList");
     if (stored) return JSON.parse(stored);
@@ -46,32 +50,36 @@ const HomePage = () => {
     return stored ? JSON.parse(stored) : {};
   });
   const [newReminder, setNewReminder] = useState("");
+  const navigate = useNavigate();
+
 
 
   useEffect(() => {
-    fetchUserName();
-    fetchCertifications();
-    fetchProjects();
-    const storedCourses = JSON.parse(
-      localStorage.getItem("recommendedCourses")
-    ) || [
-      {
-        name: "React Basics",
-        description: "Learn the basics of React",
-        imgUrl: "react.png",
-        instructor: "John Doe",
-        language: "English",
-      },
-      {
-        name: "Advanced Node.js",
-        description: "Deep dive into Node.js",
-        imgUrl: "node.png",
-        instructor: "Jane Smith",
-        language: "English",
-      },
-    ]; // fallback example courses
-    setRecommendedCourses(storedCourses);
-  }, []);
+  fetchUserName();
+  fetchCertifications();
+  fetchProjects();
+
+  const getSafe = (key, fallback = []) => {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  };
+
+  const stored = getSafe("recommendedCourses");
+  const added = getSafe("addedCourses");
+
+  setRecommendedCourses(stored);
+  setAddedCourses(added);
+
+  if (stored.length > 0) {
+    setSelectedCourse(stored[0]);
+  }
+}, []);
+
+
 
   const fetchUserName = async () => {
     try {
@@ -172,14 +180,44 @@ const HomePage = () => {
     }
   };
 
-  const handleAddCourse = () => {
-    setAddedCourses([...addedCourses, selectedCourse]);
-    setIsAdded(true);
+  const handleAddCourse = async () => {
+    if (!selectedCourse) return;
+
+    const alreadyExists = addedCourses.includes(selectedCourse.id);
+    if (alreadyExists) return;
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`${API_BACK}/employees/courses`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token,
+        },
+        body: JSON.stringify({
+          courseId: selectedCourse.id,
+          favstatus: false,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to add course");
+
+      const updated = [...addedCourses, selectedCourse.id];
+      setAddedCourses(updated);
+      localStorage.setItem("addedCourses", JSON.stringify(updated));
+      setIsAdded(true);
+    } catch (error) {
+      console.error("Error adding course:", error);
+      alert("There was a problem adding the course.");
+    }
   };
 
+
+
   const handleGoToCourses = () => {
-    alert("Navigating to courses page...");
+    navigate("/courses");
   };
+
 
   return (
     <>
@@ -322,6 +360,12 @@ const HomePage = () => {
               <h4 className="section-header">Recommended Courses</h4>
             </div>
             <Swiper
+              onSlideChange={(swiper) => {
+                const index = swiper.activeIndex;
+                const current = recommendedCourses[index];
+                if (current) setSelectedCourse(current);
+              }}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
               modules={[Autoplay, EffectCoverflow, Navigation, Pagination]}
               effect="coverflow"
               autoplay={{
@@ -353,20 +397,51 @@ const HomePage = () => {
                         backgroundImage: `url("img/${
                           decodeURIComponent(course.imgUrl) || "default.jpg"
                         }")`,
+                        position: "relative",
                       }}
                       onClick={() => {
                         setSelectedCourse(course);
                         setShowModal(true);
                       }}
-                    />
+                    >
+                      {addedCourses.includes(course.id) && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "8px",
+                            right: "8px",
+                            backgroundColor: "#28a745",
+                            color: "white",
+                            padding: "4px 8px",
+                            borderRadius: "8px",
+                            fontSize: "0.7rem",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          ✓ Added
+                        </span>
+                      )}
+                    </div>
                   )}
                 </SwiperSlide>
               ))}
             </Swiper>
             <div className="homepage-add-button-container">
               <div className="add-button">
-                <button onClick={handleAddCourse} disabled={isAdded}>
-                  {isAdded ? "Added" : "Add"}
+                <button
+                  onClick={handleAddCourse}
+                  disabled={!selectedCourse || addedCourses.includes(selectedCourse.id)}
+                  style={{
+                    backgroundColor: addedCourses.includes(selectedCourse?.id)
+                      ? "#6f42c1" // color de 'Added'
+                      : "#6f42c1", // color normal
+                    color: "white",
+                    border: "none",
+                    padding: "8px 16px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  {addedCourses.includes(selectedCourse?.id) ? "Added" : "Add"}
                 </button>
                 <button
                   className={addedCourses.length > 0 ? "enabled" : ""}

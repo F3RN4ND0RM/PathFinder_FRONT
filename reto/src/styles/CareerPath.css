@@ -203,3 +203,9 @@ button:hover {
 .layout-container.collapsed .goal-main {
   max-width: none;
 }
+
+.faded-textarea::placeholder {
+  color: #999;        
+  font-style: italic; 
+  opacity: 1;          
+}
