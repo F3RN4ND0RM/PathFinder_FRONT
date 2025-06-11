@@ -24,7 +24,7 @@ export default function CreateNewUser() {
     const email = e.target.email.value;
 
     if (!selectedNivel) {
-      setAlert({ type: 'danger', msg: 'Selecciona un nivel antes de continuar.' });
+      setAlert({ type: 'danger', msg: 'Select a level before continuing.' });
       setLoading(false);
       return;
     }
@@ -55,7 +55,7 @@ export default function CreateNewUser() {
 
     } catch (error) {
       console.error("❌ Error:", error);
-      setAlert({ type: 'danger', msg: 'Algo salió mal. Intenta de nuevo.' });
+      setAlert({ type: 'danger', msg: 'Something went wrong. Please try again.' });
     } finally {
       setLoading(false);
     }
@@ -70,15 +70,15 @@ export default function CreateNewUser() {
           </div>
         )}
         <div className="form-group">
-          <label htmlFor="name">Nombre:</label>
+          <label htmlFor="name">Name:</label>
           <input type="text" id="name" name="name" className="form-control" required />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Correo electrónico:</label>
+          <label htmlFor="email">Email:</label>
           <input type="email" id="email" name="email" className="form-control" required />
         </div>
         <div className="form-group">
-          <label htmlFor="nivel">Nivel:</label>
+          <label htmlFor="nivel">Level:</label>
           <Select
             id="nivel"
             name="nivel"
@@ -90,7 +90,7 @@ export default function CreateNewUser() {
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Creando...' : 'Crear usuario'}
+          {loading ? 'Creating...' : 'Create user'}
         </button>
       </form>
     </div>
