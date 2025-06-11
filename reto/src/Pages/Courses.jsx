@@ -3,6 +3,7 @@ import CourseCard from "../components/CourseCard";
 import { Container, Row, Col } from "react-bootstrap";
 import Header from "../components/Header";
 import "../styles/Courses.css";
+import { FaEdit } from "react-icons/fa";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -67,6 +68,48 @@ const Courses = () => {
     (course) => Number(course.Courseinfo.status) === 100
   );
 
+  const handleEdit = async (courseId, newStatus) => {
+    const num = Number(newStatus);
+    if (isNaN(num) || num < 0 || num > 100) {
+      alert("Please enter a valid percentage (0–100).");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const res = await fetch(`${API_BACK}/employees/courseStatus/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token,
+        },
+        body: JSON.stringify({
+          courseId,
+          status: num,
+        }),
+      });
+
+      if (res.ok) {
+        const updated = courses.map((c) =>
+          c.id === courseId
+            ? { ...c, Courseinfo: { ...c.Courseinfo, status: num } }
+            : c
+        );
+        setCourses(updated);
+        localStorage.setItem(
+          "completedCourses",
+          JSON.stringify(updated.filter((c) => c.Courseinfo.status === 100).map((c) => c.name))
+        );
+      } else {
+        alert("Failed to update course.");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Server error.");
+    }
+  };
+  
   return (
     <div className="courses-page">
       <Container>
@@ -92,10 +135,11 @@ const Courses = () => {
                     title={course.name}
                     description={course.description}
                     completed={course.Courseinfo.status}
-                    actionText="Continue"
-                    actionLink="#"
+                    actionText="Keep Learning"
                     showCertificate={false}
                     onDelete={() => handleDelete(course.name)}
+                    onEdit={(newStatus) => handleEdit(course.id, newStatus)}
+                    isEditable={true}
                   />
                 </Col>
               ))}
@@ -118,6 +162,8 @@ const Courses = () => {
                     actionLink="#"
                     showCertificate={true}
                     onDelete={() => handleDelete(course.name)}
+                    onEdit={(newValue) => handleEdit(course.id, newValue)}
+                    isEditable={false}
                   />
                 </Col>
               ))}

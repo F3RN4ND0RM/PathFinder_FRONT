@@ -9,7 +9,7 @@
 }
 
 .bg-purple-light {
-  background-color: var(--light-purple) !important;
+  background-color: var(--light-purple);
 }
 
 .btn-outline-purple {

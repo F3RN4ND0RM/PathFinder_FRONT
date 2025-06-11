@@ -7,31 +7,27 @@ import "../styles/Profile.css";
 
 function Profile({ collapsed, setCollapsed }) {
   const navigate = useNavigate();
-  const API_BACK = process.env.REACT_APP_API_URL; 
+  const API_BACK = process.env.REACT_APP_API_URL;
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
   const [userAbilities, setUserAbilities] = useState([]);
   const [completedCourses, setCompletedCourses] = useState([]);
-  const isSidebarCollapsed = collapsed;
+  const [certifications, setCertifications] = useState([]); // ← NUEVO
 
+  const isSidebarCollapsed = collapsed;
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch(
-          `${API_BACK}/employees/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              token,
-            },
-          }
-        );
+        const response = await fetch(`${API_BACK}/employees/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+        });
         const data = await response.json();
-        console.log("📦 Datos del backend:", data);
-
         if (!data.error) {
           setApiData(data);
           setUserAbilities(data.abilitiesOfEmployee || []);
@@ -44,9 +40,7 @@ function Profile({ collapsed, setCollapsed }) {
 
     const fetchInactiveProjects = async () => {
       try {
-        const apiUrl = new URL(
-          `${API_BACK}/employees/projects`
-        );
+        const apiUrl = new URL(`${API_BACK}/employees/projects`);
         apiUrl.searchParams.append("status", "false");
 
         const response = await fetch(apiUrl.toString(), {
@@ -60,7 +54,6 @@ function Profile({ collapsed, setCollapsed }) {
         if (!response.ok) throw new Error("Error en la solicitud");
 
         const data = await response.json();
-
         if (data.error) throw new Error(data.error);
 
         const formattedProjects = data.rolesOfEmployee.map((role) => ({
@@ -90,25 +83,21 @@ function Profile({ collapsed, setCollapsed }) {
 
     const fetchCompletedCourses = async () => {
       try {
-        const response = await fetch(
-          `${API_BACK}/employees/courses`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              token,
-            },
-          }
-        );
+        const response = await fetch(`${API_BACK}/employees/courses`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+        });
 
         const data = await response.json();
-
         if (!data.error) {
           const fetchedCourses = data.coursesOfEmployee || [];
-          const completedCourses = fetchedCourses.filter(
+          const completed = fetchedCourses.filter(
             (course) => Number(course.Courseinfo.status) === 100
           );
-          const courseNames = completedCourses.map((course) => course.name);
+          const courseNames = completed.map((course) => course.name);
           localStorage.setItem("completedCourses", JSON.stringify(courseNames));
           setCompletedCourses(courseNames);
         }
@@ -117,9 +106,30 @@ function Profile({ collapsed, setCollapsed }) {
       }
     };
 
+    const fetchCertifications = async () => {
+      try {
+        const response = await fetch(`${API_BACK}/employees/certifications`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+        });
+
+        const data = await response.json();
+        if (!data.error) {
+          const certs = data.certificationsOfEmployee || [];
+          setCertifications(certs);
+        }
+      } catch (error) {
+        console.error("❌ Error fetching certifications:", error);
+      }
+    };
+
     fetchProfileData();
     fetchInactiveProjects();
     fetchCompletedCourses();
+    fetchCertifications(); 
   }, [token]);
 
   const handleEdit = () => {
@@ -169,6 +179,7 @@ function Profile({ collapsed, setCollapsed }) {
           </div>
         </div>
       </div>
+
       <div className="profile-content">
         <div className="profile-section">
           <div className="skills-box profile-info-box">
@@ -194,18 +205,25 @@ function Profile({ collapsed, setCollapsed }) {
 
           <div className="courses-box profile-info-box">
             <div className="box-header">
-              <i className="fas fa-graduation-cap"></i>
-              <h5>Completed Courses</h5>
+              <i className="fas fa-certificate"></i>
+              <h5>Completed Courses and Certifications</h5>
             </div>
             <div className="box-content">
-              {storedCourses.length > 0 ? (
-                storedCourses.map((course, index) => (
-                  <span key={index} className="course-item">
-                    <i className="fas fa-check-circle"></i> {course}
-                  </span>
-                ))
+              {storedCourses.length === 0 && certifications.length === 0 ? (
+                <span>No courses or certifications yet</span>
               ) : (
-                <span>No courses completed yet</span>
+                <>
+                  {storedCourses.map((course, index) => (
+                    <span key={`course-${index}`} className="course-item">
+                      <i className="fas fa-check-circle"></i> {course}
+                    </span>
+                  ))}
+                  {certifications.map((cert, index) => (
+                    <span key={`cert-${index}`} className="course-item">
+                      <i className="fas fa-award"></i> {cert.name}
+                    </span>
+                  ))}
+                </>
               )}
             </div>
           </div>
@@ -228,7 +246,8 @@ function Profile({ collapsed, setCollapsed }) {
             )}
           </div>
         </div>
-          <ProjectTimeline />
+
+        <ProjectTimeline />
       </div>
     </div>
   );

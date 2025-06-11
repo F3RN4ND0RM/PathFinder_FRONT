@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import "../styles/AllCourses.css";
+import axios from 'axios';
 import SearchIcon from "@mui/icons-material/Search";
 
 
@@ -48,6 +49,31 @@ export const AllCourses = () => {
   const filteredCourses = courses.filter((course) =>
     course.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const handleAddCourse = async (courseId) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await axios.put(
+      `${API_BACK}/employees/courses`,
+      { 
+        courseId: courseId,
+        favstatus: true 
+      },
+      {
+        headers: {
+          token: token,
+        }
+      }
+    );
+
+    alert(`Curso agregado: ${response.data.courseName}`);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error adding course:', error.response?.data || error.message);
+    alert(error.response?.data?.message || 'Error al agregar curso');
+    throw error;
+  }
+};
 
   return (
     <div>
@@ -71,9 +97,12 @@ export const AllCourses = () => {
         </Row>
 
         {loading && (
-          <div className="text-center">
-            <Spinner animation="border" />
-          </div>
+         
+  <div className="d-flex flex-column align-items-center justify-content-center py-5 my-5">
+    <div className="spinner-border text-primary"  role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  </div>
         )}
 
         {error && <Alert variant="danger">{error}</Alert>}
@@ -90,7 +119,7 @@ export const AllCourses = () => {
                   completed={course.completed || 0}
                   actionText="Add"
                   showCertificate={false}
-                  onActionClick={() => alert(`Added course: ${course.name}`)}
+                  onActionClick={() => handleAddCourse(course.id)}
                 />
               </Col>
             ))}

@@ -26,7 +26,7 @@ const ProjectCard = ({ project }) => {
             handleCreateRolesClick();
           }}
         >
-          Create Roles
+          Show Details
         </Button>
       </div>
 

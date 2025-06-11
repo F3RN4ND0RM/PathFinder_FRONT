@@ -8,7 +8,7 @@ const CreateProjectPage = () => {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [alertVariant, setAlertVariant] = useState('success');
+  const [alertColor, setAlertColor] = useState('#A100FF');
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -20,13 +20,28 @@ const CreateProjectPage = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const { name, value } = e.target;
+  
+  // Si es el campo de fecha, formatear correctamente
+  if (name === 'startDate') {
+    const date = new Date(value);
+    const formattedDate = `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`;
+    
+    setFormData({
+      ...formData,
+      [name]: formattedDate
+    });
+  } else {
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  }
+};
 
-  const showNotification = (message, variant = 'success') => {
+  const showNotification = (message, color = '#A100FF') => {
     setAlertMessage(message);
-    setAlertVariant(variant);
+    setAlertColor(color); 
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
   };
@@ -68,7 +83,7 @@ const CreateProjectPage = () => {
       return;
     }
 
-    showNotification("Project created successfully!");
+    showNotification("Project created successfully!", '#A100FF');
 
     // Espera 2 segundos para mostrar la alerta antes de redirigir
     setTimeout(() => {
@@ -88,7 +103,7 @@ const CreateProjectPage = () => {
       <div className="custom-alert-container">
         <Alert 
           show={showAlert} 
-          variant={alertVariant} 
+          variant={alertColor} 
           onClose={() => setShowAlert(false)} 
           dismissible
         >
@@ -137,7 +152,7 @@ const CreateProjectPage = () => {
             </Form.Group>
 
             <Form.Group controlId="formExpiration" className="mb-4">
-              <Form.Label className="form-label">Expiration Date</Form.Label>
+              <Form.Label className="form-label">Start Date</Form.Label>
               <Form.Control
                 type="date"
                 name="expiration"
@@ -145,15 +160,20 @@ const CreateProjectPage = () => {
                 value={formData.expiration}
                 onChange={handleInputChange}
                 required
+                  min="2000-01-01" // Fecha mínima opcional
+                max="2100-12-31" // Fecha máxima opcional
               />
-              
+              <Form.Text className="text-muted">
+                Formato: YYYY/MM/DD (ej. 2000/02/28)
+              </Form.Text>
+                          
             </Form.Group>
 
             <div className="d-flex justify-content-between">
-              <Button variant="primary" type="button" className="submit-button" onClick={handleCancel}>
+              <Button variant="primary" type="button" className="new-project-btn" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button variant="primary" type="submit" className="submit-button">
+              <Button variant="primary" type="submit" className="new-project-btn">
                 Create Project
               </Button>
             </div>

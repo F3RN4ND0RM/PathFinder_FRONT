@@ -21,6 +21,7 @@ import { AllCourses } from "./Pages/AllCourses";
 import CreateProjectPage from "./Pages/CreateProject";
 import ProjectDetail from "./Pages/ProjectDetail";
 import { ProjectDetailM } from "./Pages/ProjectDetailM";
+import CreateNewUser from "./Pages/CreateNewUser";
 
 // 🔒 AUTH WRAPPER CORREGIDO
 function AuthWrapper({ children }) {
@@ -221,7 +222,20 @@ function App() {
                 <ProjectDetailM />
               }
             />
+             <Route
+              path="/createuser"
+              element={
+                <Layout
+                  title="Create New User"
+                  subtitle="Add a new user to the system"
+                  name={localStorage.getItem("userName") || "Usuario"}
+                >
+                  <CreateNewUser />
+                </Layout>
+              }
+            />
           </Routes>
+
         </AuthWrapper>
       </UserProvider>
     </Router>

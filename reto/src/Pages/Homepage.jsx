@@ -1,6 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import MiniCalendar from "../components/MiniCalendar";
 import CertificationCard from "../components/CertificationCard";
@@ -16,6 +17,7 @@ import {
   Navigation,
   Pagination,
 } from "swiper/modules";
+
 
 const HomePage = () => {
   const API_BACK = process.env.REACT_APP_API_URL;
@@ -33,6 +35,8 @@ const HomePage = () => {
   const [name, setName] = useState(
     localStorage.getItem("userName") || "Usuario"
   );
+  const swiperRef = useRef();
+
   const [savedNotes, setSavedNotes] = useState(() => {
     const stored = localStorage.getItem("quickNotesList");
     if (stored) return JSON.parse(stored);
@@ -40,31 +44,42 @@ const HomePage = () => {
     localStorage.setItem("quickNotesList", JSON.stringify(initial));
     return initial;
   });
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [reminders, setReminders] = useState(() => {
+    const stored = localStorage.getItem("calendarReminders");
+    return stored ? JSON.parse(stored) : {};
+  });
+  const [newReminder, setNewReminder] = useState("");
+  const navigate = useNavigate();
+
+
 
   useEffect(() => {
-    fetchUserName();
-    fetchCertifications();
-    fetchProjects();
-    const storedCourses = JSON.parse(
-      localStorage.getItem("recommendedCourses")
-    ) || [
-      {
-        name: "React Basics",
-        description: "Learn the basics of React",
-        imgUrl: "react.png",
-        instructor: "John Doe",
-        language: "English",
-      },
-      {
-        name: "Advanced Node.js",
-        description: "Deep dive into Node.js",
-        imgUrl: "node.png",
-        instructor: "Jane Smith",
-        language: "English",
-      },
-    ]; // fallback example courses
-    setRecommendedCourses(storedCourses);
-  }, []);
+  fetchUserName();
+  fetchCertifications();
+  fetchProjects();
+
+  const getSafe = (key, fallback = []) => {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  };
+
+  const stored = getSafe("recommendedCourses");
+  const added = getSafe("addedCourses");
+
+  setRecommendedCourses(stored);
+  setAddedCourses(added);
+
+  if (stored.length > 0) {
+    setSelectedCourse(stored[0]);
+  }
+}, []);
+
+
 
   const fetchUserName = async () => {
     try {
@@ -165,14 +180,44 @@ const HomePage = () => {
     }
   };
 
-  const handleAddCourse = () => {
-    setAddedCourses([...addedCourses, selectedCourse]);
-    setIsAdded(true);
+  const handleAddCourse = async () => {
+    if (!selectedCourse) return;
+
+    const alreadyExists = addedCourses.includes(selectedCourse.id);
+    if (alreadyExists) return;
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`${API_BACK}/employees/courses`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token,
+        },
+        body: JSON.stringify({
+          courseId: selectedCourse.id,
+          favstatus: false,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to add course");
+
+      const updated = [...addedCourses, selectedCourse.id];
+      setAddedCourses(updated);
+      localStorage.setItem("addedCourses", JSON.stringify(updated));
+      setIsAdded(true);
+    } catch (error) {
+      console.error("Error adding course:", error);
+      alert("There was a problem adding the course.");
+    }
   };
 
+
+
   const handleGoToCourses = () => {
-    alert("Navigating to courses page...");
+    navigate("/courses");
   };
+
 
   return (
     <>
@@ -194,27 +239,14 @@ const HomePage = () => {
                       <span className="note-text">{note}</span>
                       <div className="note-actions">
                         <button
-                          className="note-check-btn"
-                          title="Mark as done"
-                          onClick={() => alert(`✔️ Marked as done: ${note}`)}
-                        >
-                          <i className="bi bi-check-circle-fill"></i>
-                        </button>
-                        <button
-                          className="note-delete-btn"
-                          title="Delete note"
+                          className="mark-done-btn"
                           onClick={() => {
-                            const updatedNotes = savedNotes.filter(
-                              (_, i) => i !== index
-                            );
+                            const updatedNotes = savedNotes.filter((_, i) => i !== index);
                             setSavedNotes(updatedNotes);
-                            localStorage.setItem(
-                              "quickNotesList",
-                              JSON.stringify(updatedNotes)
-                            );
+                            localStorage.setItem("quickNotesList", JSON.stringify(updatedNotes));
                           }}
                         >
-                          <i className="bi bi-trash-fill"></i>
+                          ✔ Mark as Done
                         </button>
                       </div>
                     </li>
@@ -253,7 +285,49 @@ const HomePage = () => {
             </div>
           </Col>
           <Col md={4}>
-            <MiniCalendar />
+            <div className="calendar-reminder-wrapper">
+              <MiniCalendar onDateSelect={setSelectedDate} reminders={reminders} />
+              <div className="reminder-section mt-3">
+                <h6 className="mb-2" style={{ fontWeight: "bold" }}>
+                  Reminders for {selectedDate.toDateString()}
+                </h6>
+                <ul className="reminder-list mb-2">
+                  {(reminders[selectedDate.toDateString()] || []).length === 0 ? (
+                    <li className="text-muted small">No reminders for this day</li>
+                  ) : (
+                    reminders[selectedDate.toDateString()].map((rem, idx) => (
+                      <li key={idx} className="small">{rem}</li>
+                    ))
+                  )}
+                </ul>
+
+                <div className="d-flex">
+                  <input
+                    type="text"
+                    placeholder="Add a reminder..."
+                    className="form-control form-control-sm"
+                    value={newReminder}
+                    onChange={(e) => setNewReminder(e.target.value)}
+                  />
+                  <button
+                    className="btn save-note-btn ms-2"
+                    onClick={() => {
+                      if (!newReminder.trim()) return;
+                      const key = selectedDate.toDateString();
+                      const updated = {
+                        ...reminders,
+                        [key]: [...(reminders[key] || []), newReminder.trim()],
+                      };
+                      setReminders(updated);
+                      localStorage.setItem("calendarReminders", JSON.stringify(updated));
+                      setNewReminder("");
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
           </Col>
         </Row>
 
@@ -262,15 +336,21 @@ const HomePage = () => {
           <h4 className="section-header">Certifications</h4>
         </div>
         <Row className="mt-2">
-          {certs.map((cert) => (
-            <Col key={cert.id} md={6} className="mb-3">
-              <CertificationCard
-                name={cert.name}
-                description={cert.description}
-                expiration={cert.expiration}
-              />
+          {certs.length === 0 ? (
+            <Col>
+              <p>No active certifications yet</p>
             </Col>
-          ))}
+          ) : (
+            certs.map((cert) => (
+              <Col key={cert.id} md={6} className="mb-3">
+                <CertificationCard
+                  name={cert.name}
+                  description={cert.description}
+                  expiration={cert.expiration}
+                />
+              </Col>
+            ))
+          )}
         </Row>
 
         {/* Recommended Courses */}
@@ -280,6 +360,12 @@ const HomePage = () => {
               <h4 className="section-header">Recommended Courses</h4>
             </div>
             <Swiper
+              onSlideChange={(swiper) => {
+                const index = swiper.activeIndex;
+                const current = recommendedCourses[index];
+                if (current) setSelectedCourse(current);
+              }}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
               modules={[Autoplay, EffectCoverflow, Navigation, Pagination]}
               effect="coverflow"
               autoplay={{
@@ -311,20 +397,51 @@ const HomePage = () => {
                         backgroundImage: `url("img/${
                           decodeURIComponent(course.imgUrl) || "default.jpg"
                         }")`,
+                        position: "relative",
                       }}
                       onClick={() => {
                         setSelectedCourse(course);
                         setShowModal(true);
                       }}
-                    />
+                    >
+                      {addedCourses.includes(course.id) && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "8px",
+                            right: "8px",
+                            backgroundColor: "#28a745",
+                            color: "white",
+                            padding: "4px 8px",
+                            borderRadius: "8px",
+                            fontSize: "0.7rem",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          ✓ Added
+                        </span>
+                      )}
+                    </div>
                   )}
                 </SwiperSlide>
               ))}
             </Swiper>
             <div className="homepage-add-button-container">
               <div className="add-button">
-                <button onClick={handleAddCourse} disabled={isAdded}>
-                  {isAdded ? "Added" : "Add"}
+                <button
+                  onClick={handleAddCourse}
+                  disabled={!selectedCourse || addedCourses.includes(selectedCourse.id)}
+                  style={{
+                    backgroundColor: addedCourses.includes(selectedCourse?.id)
+                      ? "#6f42c1" // color de 'Added'
+                      : "#6f42c1", // color normal
+                    color: "white",
+                    border: "none",
+                    padding: "8px 16px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  {addedCourses.includes(selectedCourse?.id) ? "Added" : "Add"}
                 </button>
                 <button
                   className={addedCourses.length > 0 ? "enabled" : ""}

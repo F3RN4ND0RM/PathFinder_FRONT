@@ -1,43 +1,39 @@
-import React from "react";
-import { Box, Typography, Paper, IconButton } from "@mui/material";
-import { TrendingUp, MoreVert } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { Box, Typography, Paper } from "@mui/material";
+import { TrendingUp } from "@mui/icons-material";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import { motion, useAnimationControls } from "framer-motion";
-import { useEffect } from "react";
+import { motion } from "framer-motion";
+import "react-circular-progressbar/dist/styles.css";
 
-// 🎨 Colores más vibrantes
 const getKpiColor = (title) => {
   switch (title) {
     case "Total Employees":
-      return "#7e3ff2"; // Morado
+      return "#7e3ff2";
     case "Assigned Employees":
       return "#38b2ac";
     case "Unassigned":
       return "#60a5fa";
     default:
-      return "#7e57c2"; // Fallback
+      return "#7e57c2";
   }
 };
 
 const KpiCard = ({ title, value, percent, growth }) => {
   const color = getKpiColor(title);
-  const bgColor = `${color}20`; // Fondo claro
-  const controls = useAnimationControls();
+  const bgColor = `${color}20`;
 
-  // 🎯 Animar progresivamente desde 0 hasta el valor final
-  const [animatedPercent, setAnimatedPercent] = React.useState(0);
+  const [animatedPercent, setAnimatedPercent] = useState(0);
 
   useEffect(() => {
-    controls.start({ percent: percent });
     const interval = setInterval(() => {
       setAnimatedPercent((prev) => {
         if (prev < percent) return prev + 1;
         clearInterval(interval);
         return percent;
       });
-    }, 10); // Cambia la velocidad si lo deseas
+    }, 10);
     return () => clearInterval(interval);
-  }, [percent, controls]);
+  }, [percent]);
 
   return (
     <motion.div
@@ -50,38 +46,21 @@ const KpiCard = ({ title, value, percent, growth }) => {
         sx={{
           position: "relative",
           display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
+          alignItems: "center", // ✅ centrado vertical
+          justifyContent: "space-between", // ✅ separación entre info y círculo
           gap: "1rem",
-          padding: "2rem",
+          padding: "1.5rem",
           borderRadius: "20px",
           backgroundColor: "#fff",
           height: "200px",
           width: "100%",
           transition: "all 0.3s ease",
-          "&:hover": { transform: "scale(1.05)" },
+          "&:hover": { transform: "scale(1.03)" },
           borderTop: "4px solid #9b4dff",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
         }}
       >
-        <IconButton
-          sx={{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            color: "gray",
-          }}
-        >
-          <MoreVert />
-        </IconButton>
-
-        <Box
-          sx={{
-            flex: "0 0 180px",
-            minWidth: 180,
-            maxWidth: 180,
-          }}
-        >
+        <Box sx={{ flex: 1 }}>
           <Typography
             variant="h6"
             fontWeight="600"
@@ -95,6 +74,7 @@ const KpiCard = ({ title, value, percent, growth }) => {
           >
             {title}
           </Typography>
+
           <Typography
             variant="h4"
             fontWeight="bold"
@@ -103,39 +83,16 @@ const KpiCard = ({ title, value, percent, growth }) => {
           >
             {value}
           </Typography>
-
-          <Box display="flex" alignItems="center" mt={2}>
-            <Box
-              sx={{
-                backgroundColor: bgColor,
-                borderRadius: "50%",
-                width: 24,
-                height: 24,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                mr: 0.5,
-              }}
-            >
-              <TrendingUp sx={{ color: color, fontSize: 16 }} />
-            </Box>
-            <Typography variant="body2" color={color} fontWeight="bold">
-              {growth} Inc
-            </Typography>
-          </Box>
         </Box>
 
-        {/* 🔥 Circular Progress animado */}
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            position: "relative",
             width: 90,
-            height: 120,
-            ml: 0.5,
-            transform: "translateX(10px)",
+            height: 90,
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <CircularProgressbar
@@ -150,21 +107,22 @@ const KpiCard = ({ title, value, percent, growth }) => {
           <Box
             sx={{
               position: "absolute",
-              top: "62%",
+              top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
+              pointerEvents: "none",
             }}
           >
             <Typography
               sx={{
-                fontSize: "15px",
+                fontSize: "14px",
                 fontWeight: "800",
                 color: color,
                 fontFamily: "'Inter', sans-serif",
                 lineHeight: 1,
               }}
             >
-              +{percent}%
+              {percent}%
             </Typography>
           </Box>
         </Box>

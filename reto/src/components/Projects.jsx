@@ -24,11 +24,9 @@ const Projects = ({ projects }) => {
   }, [projects]);
 
   return (
-    <Card className="projects-card shadow">
+    <Card className="projects-card ">
       <Card.Body>
-        <div className="d-flex align-items-center mb-3">
-          <h5 className="fw-bold text-dark mb-0 section-header">Projects</h5>
-        </div>
+          <h5 className="mb-1 section-header">Projects</h5>
         {projects.length === 0 ? (
           <div className="text-center py-4 text-muted">No active projects</div>
         ) : (

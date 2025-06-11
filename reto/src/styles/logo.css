@@ -92,3 +92,53 @@
   border-radius: 8px;
   border-left: 3px solid var(--primary-purple);
 }
+/* Estilo minimalista para el botón del ojo */
+.eye {
+  /* Eliminar todos los estilos por defecto */
+  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--primary-purple);
+
+  
+  cursor: pointer;
+  
+  /* Tamaño consistente */
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cambio de color al interactuar */
+.eye:hover {
+  color: white;
+}
+
+/* Estilo para los iconos */
+.eye svg {
+  width: 100%;
+  height: 100%;
+  transition: color 0.2s ease;
+}
+
+/* Modo oscuro opcional */
+[data-bs-theme="dark"] .eye {
+  color: #adb5bd;
+}
+
+[data-bs-theme="dark"] .eye:hover {
+  color: #dee2e6;
+}
+
+button.eye:hover, 
+button.eye:focus, 
+button.eye:active {
+  background-color: transparent !important;
+  color: var(--primary-purple) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
