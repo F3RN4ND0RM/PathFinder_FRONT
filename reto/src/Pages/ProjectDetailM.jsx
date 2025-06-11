@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Spinner, Alert, Row, Col, Card } from "react-bootstrap";
+import { Container, Spinner, Alert, Row, Col, Card, Modal } from "react-bootstrap";
 import {
   FaHourglassStart,
   FaHourglassEnd,
@@ -20,6 +20,8 @@ export const ProjectDetailM = () => {
 
   const [roles, setRoles] = useState([{ name: "", description: "" }]);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [showFinishModal, setShowFinishModal] = useState(false);
+
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -82,6 +84,44 @@ export const ProjectDetailM = () => {
       setSubmitMessage("Something went wrong");
     }
   };
+
+  const handleOpenFinishModal = () => setShowFinishModal(true);
+  const handleCloseFinishModal = () => setShowFinishModal(false);
+
+  const handleConfirmFinish = async () => {
+    const token = localStorage.getItem("authToken");
+
+    try {
+      const res = await fetch(`${API_BACK}/projects`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token,
+        },
+        body: JSON.stringify({
+          projectId: parseInt(id),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        console.error("Error al finalizar proyecto:", data.error);
+      } else {
+        console.log("Proyecto finalizado:", data);
+        setProject(prev => ({
+          ...prev,
+          status: false,
+          endDate: new Date().toISOString().split("T")[0]
+        }));
+      }
+    } catch (err) {
+      console.error("Error de red:", err);
+    } finally {
+      setShowFinishModal(false);
+    }
+  };
+
 
   if (loading) {
     return (
@@ -159,6 +199,27 @@ export const ProjectDetailM = () => {
                   )}
                 </Col>
               </Row>
+
+             <Row className="align-items-center mt-4">
+              <Col className="align-items-center">
+                <button
+                  style={{
+                    backgroundColor: project.status ? "#dc3545" : "#6c757d", // rojo si activo, gris si inactivo
+                    color: "white",
+                    border: "none",
+                    padding: "6px 12px",
+                    borderRadius: "4px",
+                    fontSize: "0.85rem",
+                    cursor: project.status ? "pointer" : "not-allowed",
+                    opacity: project.status ? 1 : 0.7,
+                  }}
+                  disabled={!project.status} // desactiva si ya está inactivo
+                  onClick={handleOpenFinishModal}
+                >
+                  Finish Project
+                </button>
+              </Col>
+            </Row>
             </Card.Body>
           </Card>
 
@@ -222,6 +283,28 @@ export const ProjectDetailM = () => {
               )}
             </Card.Body>
           </Card>
+          <Modal show={showFinishModal} onHide={handleCloseFinishModal} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Finish</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Are you sure you want to finish this project?
+            </Modal.Body>
+            <Modal.Footer>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={handleCloseFinishModal}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-danger btn-sm ms-2"
+                onClick={handleConfirmFinish}
+              >
+                Finish
+              </button>
+            </Modal.Footer>
+          </Modal>
         </Container>
       </Layout>
     </>

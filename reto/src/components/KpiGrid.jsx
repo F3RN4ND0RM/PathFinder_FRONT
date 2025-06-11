@@ -2,26 +2,26 @@ import React from "react";
 import { Box } from "@mui/material";
 import KpiCard from "./KpiCard";
 
-const KpiGrid = ({ assigned }) => {
+const KpiGrid = ({ assigned, projects }) => {
   const KPI_DATA = [
     {
       title: "Total Employees",
-      value: assigned.totalEmployees, // 👈 totalEmployees ya es número
-      percent: assigned.assignedPercentage.percentage, // 👈 usamos percentage
-      growth: "+14%", // Puedes ajustar dinámicamente si quieres
+      value: assigned.totalEmployees,
+      percent: assigned.assignedPercentage.percentage, 
+      growth: "+14%", 
     },
     {
       title: "Assigned Employees",
-      value: assigned.assignedPercentage.Total, // 👈 usamos Total
-      percent: assigned.assignedPercentage.percentage, // 👈 usamos percentage
+      value: assigned.assignedPercentage.Total, 
+      percent: assigned.assignedPercentage.percentage, 
       growth: "+06%",
     },
     {
-      title: "Unassigned",
-      value: assigned.unassignedPercentage.Total, // 👈 usamos Total
-      percent: assigned.unassignedPercentage.percentage, // 👈 usamos percentage
+      title: "Active Projects",
+      value: parseInt(projects.find(p => p.status === true)?.count || 0),
+      percent: projects.find(p => p.status === true)?.promedio || 0,
       growth: "+46%",
-    },
+    }
   ];
 
   return (

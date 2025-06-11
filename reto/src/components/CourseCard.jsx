@@ -12,8 +12,12 @@ const CourseCard = ({
   actionText,
   showCertificate,
   onActionClick,
+  onEdit,
 }) => {
   const [showModal, setShowModal] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [newCompleted, setNewCompleted] = useState(completed);
+
 
   const handleButtonClick = () => {
     if (showCertificate) {
@@ -37,7 +41,79 @@ const CourseCard = ({
 
         <Card.Body className="card-static-info">
           <Card.Title>{title}</Card.Title>
-          <Card.Text>Completed: {completed}%</Card.Text>
+          <Card.Text className="text-center">
+            <div className="d-inline-flex align-items-center justify-content-center">
+              {editing ? (
+                <>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={newCompleted}
+                    onChange={(e) => setNewCompleted(e.target.value)}
+                    style={{
+                      width: "60px",
+                      fontSize: "0.8rem",
+                      padding: "2px 4px",
+                      textAlign: "center",
+                    }}
+                  />
+                  <Button
+                    variant="success"
+                    size="sm"
+                    onClick={() => {
+                      onEdit(newCompleted); 
+                      setEditing(false);
+                    }}
+                    style={{
+                      padding: "2px 5px",
+                      fontSize: "0.65rem",
+                      marginLeft: "6px",
+                      lineHeight: "1",
+                    }}
+                  >
+                    ✅
+                  </Button>
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => {
+                      setEditing(false);
+                      setNewCompleted(completed); 
+                    }}
+                    style={{
+                      padding: "2px 5px",
+                      fontSize: "0.65rem",
+                      marginLeft: "4px",
+                      lineHeight: "1",
+                    }}
+                  >
+                    ❌
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <span>Completed: {completed}%</span>
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => setEditing(true)}
+                    style={{
+                      padding: "2px 5px",
+                      fontSize: "0.6rem",
+                      marginLeft: "6px",
+                      lineHeight: "1",
+                      height: "22px",
+                    }}
+                    title="Edit progress"
+                  >
+                    ✏️
+                  </Button>
+                </>
+              )}
+            </div>
+          </Card.Text>
+
           <div className="d-grid gap-2">
             <Button
               variant="primary"
@@ -53,13 +129,14 @@ const CourseCard = ({
         </Card.Body>
       </Card>
 
+      {/* Modal del certificado */}
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
         size="lg"
         centered
-        backdrop="true" // permite cerrar al hacer click fuera
-        keyboard={true} // permite cerrar con Esc
+        backdrop="true"
+        keyboard={true}
         contentClassName="custom-modal-content"
       >
         <Modal.Body className="d-flex justify-content-center align-items-center p-0">

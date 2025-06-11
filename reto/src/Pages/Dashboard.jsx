@@ -49,7 +49,7 @@ export default function Dashboard() {
   return (
     <Box sx={{ padding: "2rem", backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
       <Box sx={{ maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
-        <KpiGrid assigned={data.Assigned} />
+        <KpiGrid assigned={data.Assigned} projects={data.Projects}/>
 
         <Box
           mt={4}

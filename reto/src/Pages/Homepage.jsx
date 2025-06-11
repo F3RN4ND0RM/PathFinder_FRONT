@@ -298,15 +298,21 @@ const HomePage = () => {
           <h4 className="section-header">Certifications</h4>
         </div>
         <Row className="mt-2">
-          {certs.map((cert) => (
-            <Col key={cert.id} md={6} className="mb-3">
-              <CertificationCard
-                name={cert.name}
-                description={cert.description}
-                expiration={cert.expiration}
-              />
+          {certs.length === 0 ? (
+            <Col>
+              <p>No active certifications yet</p>
             </Col>
-          ))}
+          ) : (
+            certs.map((cert) => (
+              <Col key={cert.id} md={6} className="mb-3">
+                <CertificationCard
+                  name={cert.name}
+                  description={cert.description}
+                  expiration={cert.expiration}
+                />
+              </Col>
+            ))
+          )}
         </Row>
 
         {/* Recommended Courses */}
