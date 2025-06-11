@@ -18,6 +18,12 @@ export default function CareerPath({ collapsed, setCollapsed }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [previousGoals, setPreviousGoals] = useState({
+    objective: "",
+    skills: "",
+    values: "",
+  });
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -83,19 +89,21 @@ export default function CareerPath({ collapsed, setCollapsed }) {
     const fetchGoals = async () => {
       const token = localStorage.getItem("authToken");
       try {
-        const response = await fetch(
-          `${API_BACK}/employees/`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              token,
-            },
-          }
-        );
+        const response = await fetch(`${API_BACK}/employees/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+        });
         const data = await response.json();
         if (!data.error && data.Goal) {
           setForm({
+            objective: data.Goal.goals || "",
+            skills: data.Goal.technologies || "",
+            values: data.Goal.project || "",
+          });
+          setPreviousGoals({
             objective: data.Goal.goals || "",
             skills: data.Goal.technologies || "",
             values: data.Goal.project || "",
@@ -105,7 +113,10 @@ export default function CareerPath({ collapsed, setCollapsed }) {
         console.error("Error fetching goals:", error);
       }
     };
-  }, [location]); // ✅ rerun logic when route changes
+
+    fetchGoals();
+  }, [location]);
+
 
   return (
     <div className="career-path-container fade-in">
@@ -141,8 +152,8 @@ export default function CareerPath({ collapsed, setCollapsed }) {
               name="objective"
               value={form.objective}
               onChange={handleChange}
-              placeholder="This helps clarify the exact direction you want to pursue."
-              rows="4"
+              placeholder={previousGoals.objective ? `Previous: ${previousGoals.objective}` : ""}
+              className={form.objective ? "" : "faded-textarea"}
             />
           </div>
 
@@ -155,8 +166,8 @@ export default function CareerPath({ collapsed, setCollapsed }) {
               name="skills"
               value={form.skills}
               onChange={handleChange}
-              placeholder="This helps identify the priority areas for training and ensures you focus on courses or programs that truly add value."
-              rows="4"
+              placeholder={previousGoals.skills ? `Previous: ${previousGoals.skills}` : ""}
+              className={form.skills ? "" : "faded-textarea"}
             />
           </div>
 
@@ -166,11 +177,11 @@ export default function CareerPath({ collapsed, setCollapsed }) {
               want to build?
             </label>
             <textarea
-              name="values"
+              name="objective"
               value={form.values}
               onChange={handleChange}
-              placeholder="This question digs deeper into the alignment between your professional aspirations and personal motivations..."
-              rows="4"
+              placeholder={previousGoals.values ? `Previous: ${previousGoals.values}` : ""}
+              className={form.ovalues ? "" : "faded-textarea"}
             />
           </div>
 

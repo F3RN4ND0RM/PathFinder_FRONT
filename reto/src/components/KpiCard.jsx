@@ -83,26 +83,6 @@ const KpiCard = ({ title, value, percent, growth }) => {
           >
             {value}
           </Typography>
-
-          <Box display="flex" alignItems="center" mt={2}>
-            <Box
-              sx={{
-                backgroundColor: bgColor,
-                borderRadius: "50%",
-                width: 24,
-                height: 24,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                mr: 0.5,
-              }}
-            >
-              <TrendingUp sx={{ color: color, fontSize: 16 }} />
-            </Box>
-            <Typography variant="body2" color={color} fontWeight="bold">
-              {growth} Inc
-            </Typography>
-          </Box>
         </Box>
 
         <Box
@@ -142,7 +122,7 @@ const KpiCard = ({ title, value, percent, growth }) => {
                 lineHeight: 1,
               }}
             >
-              +{percent}%
+              {percent}%
             </Typography>
           </Box>
         </Box>

@@ -37,7 +37,7 @@ const StaffCard = ({ staff }) => {
         </div>
 
         <div className="click-indicator">
-          {expanded ? '▲ Ver menos' : '▼ Ver más'}
+          {expanded ? '▲ See less' : '▼ See more'}
         </div>
       </Card.Body>
 
@@ -45,7 +45,7 @@ const StaffCard = ({ staff }) => {
         <Card.Body className="card-slide-info">
           {abilitiesOfEmployee?.length > 0 && (
             <div className="info-section">
-              <h4>Habilidades</h4>
+              <h4>Skills</h4>
               <ListGroup variant="flush">
                 {abilitiesOfEmployee.map((ability) => (
                   <ListGroup.Item key={ability.id}>{ability.name}</ListGroup.Item>
@@ -63,9 +63,9 @@ const StaffCard = ({ staff }) => {
                     <div><strong>{role.name}</strong></div>
                     <small>{role.description}</small><br />
                     <Badge bg={role.Assigned?.status ? 'success' : 'secondary'}>
-                      {role.Assigned?.status ? 'Asignado' : 'Finalizado'}
+                      {role.Assigned?.status ? 'Assigned' : 'Completed'}
                     </Badge>
-                    {role.Project?.name && <span> - Proyecto: {role.Project.name}</span>}
+                    {role.Project?.name && <span> - Project: {role.Project.name}</span>}
                   </ListGroup.Item>
                 ))}
               </ListGroup>
@@ -74,14 +74,14 @@ const StaffCard = ({ staff }) => {
 
           {certificationsOfEmployee?.length > 0 && (
             <div className="info-section">
-              <h4>Certificaciones</h4>
+              <h4>Certifications</h4>
               <ListGroup variant="flush">
                 {certificationsOfEmployee.map((cert) => (
                   <ListGroup.Item key={cert.id}>
                     <div><strong>{cert.name}</strong></div>
                     <small>{cert.description}</small><br />
                     <span className="custom-expiration-badge">
-                      Expira: {cert.Certinfo?.expiration}
+                      Expires: {cert.Certinfo?.expiration}
                     </span>
                   </ListGroup.Item>
                 ))}

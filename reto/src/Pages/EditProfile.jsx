@@ -29,6 +29,10 @@ function EditProfile({ collapsed, setCollapsed }) {
   const [abilities, setAbilities] = useState([]);
   const [selectedAbilities, setSelectedAbilities] = useState([]);
   const [originalAbilities, setOriginalAbilities] = useState([]);
+  const [certOptions, setCertOptions] = useState([]);
+  const [selectedCerts, setSelectedCerts] = useState([]);
+  const [expirationDates, setExpirationDates] = useState({});
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,13 +91,37 @@ function EditProfile({ collapsed, setCollapsed }) {
 
     fetchData();
     fetchAbilities();
+
+    const fetchCertifications = async () => {
+      try {
+        const response = await fetch(`${API_BACK}/certifications`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token, 
+          },
+        });
+        const data = await response.json();
+        setCertOptions(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error loading certifications:", err);
+      }
+    };
+
+    fetchCertifications();
+
   }, [token]);
+
+  const allCertsHaveExpiration = selectedCerts.every(
+    (certId) => expirationDates[certId]?.trim()
+  );
 
   const hasChanges =
     form.name !== originalData.name ||
     form.email !== originalData.email ||
     JSON.stringify(selectedAbilities.sort()) !==
-      JSON.stringify(originalAbilities.sort());
+      JSON.stringify(originalAbilities.sort()) ||
+    (selectedCerts.length > 0 && allCertsHaveExpiration);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -178,6 +206,26 @@ function EditProfile({ collapsed, setCollapsed }) {
     } catch (error) {
       console.error("PUT request error:", error);
       alert("Server connection error.");
+    }
+
+    for (const cert of selectedCerts) {
+      const expiration = expirationDates[cert] || null;
+      const res = await fetch(`${API_BACK}/employees/certifications`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          token,
+        },
+        body: JSON.stringify({
+          certificationId: cert,
+          expiration,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok || result.error) {
+        console.error("❌ Failed to add certification:", result.error);
+      }
     }
   };
 
@@ -271,29 +319,54 @@ function EditProfile({ collapsed, setCollapsed }) {
           </div>
 
           <div className="form-section">
-            <h3 className="section-title">Training</h3>
+            <h3 className="section-title">Certifications</h3>
             <div className="form-group">
-              <label>Completed Courses</label>
-              <textarea
-                name="courses"
-                placeholder="List your courses separated by commas"
-                value={form.courses}
-                onChange={handleChange}
+              <label>Select your certifications</label>
+              <Select
+                isMulti
+                options={certOptions.map((cert) => ({
+                  value: cert.id,
+                  label: cert.name,
+                }))}
+                value={certOptions
+                  .filter((cert) => selectedCerts.includes(cert.id))
+                  .map((cert) => ({
+                    value: cert.id,
+                    label: cert.name,
+                  }))}
+                onChange={(selectedOptions) => {
+                  const ids = selectedOptions.map((opt) => opt.value);
+                  setSelectedCerts(ids);
+                }}
+                placeholder="Search and select certifications..."
+                className="react-select-container"
+                classNamePrefix="react-select"
               />
             </div>
-          </div>
 
-          <div className="form-section">
-            <h3 className="section-title">Projects</h3>
-            <div className="form-group">
-              <label>Describe your projects</label>
-              <textarea
-                name="projects"
-                placeholder="Detail the projects you’ve worked on"
-                value={form.projects}
-                onChange={handleChange}
-              />
-            </div>
+            {selectedCerts.length > 0 && (
+              <div className="form-group">
+                <label>Set expiration date for each certification</label>
+                {selectedCerts.map((certId) => {
+                  const certName = certOptions.find((c) => c.id === certId)?.name || "";
+                  return (
+                    <div key={certId} className="cert-expiration-input">
+                      <label>{certName}</label>
+                      <input
+                        type="date"
+                        value={expirationDates[certId] || ""}
+                        onChange={(e) =>
+                          setExpirationDates({
+                            ...expirationDates,
+                            [certId]: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="form-actions">

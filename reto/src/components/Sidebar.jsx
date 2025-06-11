@@ -45,6 +45,8 @@ function Sidebar({ collapsed, setCollapsed }) {
               {!collapsed && "Home"}
             </Link>
           </li>
+          {/* Solo TFS puede crear una cuenta */}
+         
 
           {/* Solo Manager puede ver Dashboard */}
           {isManager && (
@@ -81,7 +83,15 @@ function Sidebar({ collapsed, setCollapsed }) {
               {!collapsed && "Profile"}
             </Link>
           </li>
+           {isTFS && (
+            <li className="sidebar-link-container">
+              <Link to="/createuser" className="sidebar-link fs-5 fw-light">
+                {!collapsed && "Create User"}
+              </Link>
+            </li>
+          )}
         </ul>
+        
 
         <div className="logout-button-container mt-auto p-3">
           {!collapsed && (
